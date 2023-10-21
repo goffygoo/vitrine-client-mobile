@@ -1,0 +1,40 @@
+{
+    "PRIMARY": "#DC143C",
+    "PRIMARY_SHADE": "#B10000",
+    "SECONDARY_LIGHT": "#5AF07C",
+    "SECONDARY": "#13D23E",
+    "SECONDARY_SHADE": "#10B335",
+    "ACCENT_LIGHT": "#EBE547",
+    "ACCENT": "#DAB020",
+    "ACCENT_SECONDARY": "#FF0078",
+    "LIGHT": "#F2F4F2",
+    "DARK": "#121212",
+    "BG_PRIMARY": {
+        "DARK": "#121212",
+        "LIGHT": "#F2F4F2"
+    },
+    "BG_PRIMARY_BTAB": {
+        "DARK": "#121212",
+        "LIGHT": "#E8E7E7"
+    },
+    "BG_PRIMARY_LIGHT": {
+        "DARK": "#3F3F3F",
+        "LIGHT": "#D4D4D4"
+    },
+    "BG_PRIMARY_DARK": {
+        "DARK": "#232323",
+        "LIGHT": "#A0A0A0"
+    },
+    "TXT_PRIMARY": {
+        "DARK": "#F2F4F2",
+        "LIGHT": "#121212"
+    },
+    "TXT_PRIMARY_LIGHT": {
+        "DARK": "#E8E7E7",
+        "LIGHT": "#433434"
+    },
+    "TXT_PRIMARY_DARK": {
+        "DARK": "#989393",
+        "LIGHT": "#4F4F4F"
+    }
+}

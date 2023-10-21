@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "project-x-native",
-    "slug": "project-x-native",
+    "name": "project-x-client-mobile",
+    "slug": "project-x-client-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
