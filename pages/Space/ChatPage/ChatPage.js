@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import Button from "../../components/Button";
+import Button from "../../../components/Button";
 
 export default function ChatPage({ route, navigation }) {
     return (
@@ -9,6 +9,8 @@ export default function ChatPage({ route, navigation }) {
         </View>
     )
 }
+
+
 
 const styles = StyleSheet.create({
     container: {
