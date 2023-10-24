@@ -15,10 +15,10 @@ const Stack = createNativeStackNavigator()
 function App() {
   return (
     <NavigationContainer style={styles.container}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="TestPage" component={TestPage} />
-        <Stack.Screen name="LoginPage" component={LoginPage} />
+      <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
         <Stack.Screen name="SignupPage" component={SignupPage} />
+        <Stack.Screen name="LoginPage" component={LoginPage} />
+        <Stack.Screen name="TestPage" component={TestPage} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Space" component={SpaceDrawer} />
       </Stack.Navigator>
