@@ -1,3 +1,37 @@
 {
-    
+    "PRIMARY_COLOR": "#FDA92D",
+    "PRIMARY_COLOR_DARK": "#C48C00", 
+    "PRIMARY_COLOR_LIGHT": "#FFC24C",
+        "BG_COLOR": {
+        "DARK": "#1A1D1F",
+        "LIGHT": "#FCFCFC"
+    },
+    "TEXT_COLOR": {
+        "DARK": "#FCFCFC",
+        "LIGHT": "#1A1D1F"
+    },
+    "TEXT_COLOR_DARK": {
+        "DARK": "#EFEFEF",
+        "LIGHT": "#1A1D1F"
+    },
+    "BG_COLOR_SHARP": {
+        "DARK": "#000000",
+        "LIGHT": "#FFFFFF"
+    },
+    "BG_COLOR_SECONDARY": {
+        "DARK": "#212B36",
+        "LIGHT": "#D0D0D0"
+    },
+    "INPUT_BG_COLOR": {
+        "DARK": "#868B90",
+        "LIGHT": "#ECEFF2"
+    },
+    "INPUT_TEXT_COLOR": {
+        "DARK": "#1A1D1F",
+        "LIGHT": "#272B30"
+    },
+    "INPUT_TEXT_COLOR_LIGHT": {
+        "DARK": "#383D44",
+        "LIGHT": "#8E97A0"
+    }
 }

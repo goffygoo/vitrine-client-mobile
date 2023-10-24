@@ -12,8 +12,8 @@ export default function Button({ onPress, text }) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 100,
-        width: 100,
+        height: 50,
+        width: 50,
         backgroundColor: '#121212',
     },
     pressable: {

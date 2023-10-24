@@ -1,28 +1,126 @@
-import { StyleSheet, Text, View } from "react-native";
-import Button from "../components/Button";
+import { Dimensions, NativeModules, Pressable, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { themeSelector, toggleTheme } from "../redux/settingReducer";
+import { themeSelector } from "../redux/settingReducer";
+import colors from './../colors.json';
+import GoogleLogin from "../components/buttons/GoogleLogin";
+import { useMemo, useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
+import TextInputBox from "../components/inputs/TextInputBox";
+
+const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
+const windowHeight = Dimensions.get('window').height;
 
 export default function SignupPage({ route, navigation }) {
     const dispatch = useDispatch();
     const theme = useSelector(themeSelector);
+    const styles = useMemo(() => generateStyles(theme), [theme]);
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     return (
         <View style={styles.container}>
-            <Text>Signup Page</Text>
-            <Text>{theme}</Text>
-            <Button text={"Click"} onPress={() => navigation.navigate('LoginPage')} />
-            <Button text={"Toggle"} onPress={() => dispatch(toggleTheme())} />
+            <View style={styles.overlay}>
+                <GoogleLogin />
+                <View style={styles.inputColumn}>
+                    <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} />
+                    <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} secureTextEntry />
+                    <TextInputBox label={"Confirm Password"} value={confirmPassword} placeholder={'Confirm your password'} onChange={e => setConfirmPassword(e)} secureTextEntry />
+                </View>
+                <View style={styles.actionRow}>
+                    <Text style={styles.primaryText}>Sign Up</Text>
+                    <View style={styles.primaryButton}>
+                        <Pressable
+                            style={styles.primaryButtonInner}
+                            android_ripple={{ color: colors.PRIMARY_COLOR_LIGHT }}
+                        >
+                            <AntDesign name="arrowright" size={40} color={colors.BG_COLOR[theme]} />
+                        </Pressable>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.buttonContainer}>
+                <Pressable
+                    style={styles.buttonContainerPressable}
+                    android_ripple={{ color: colors.PRIMARY_COLOR_LIGHT }}
+                    onPress={() => navigation.navigate('LoginPage')}
+                >
+                    <Text style={styles.buttonContainerText}>Login Instead ?</Text>
+                </Pressable>
+            </View>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
+const generateStyles = THEME => StyleSheet.create({
     container: {
         flex: 1,
         height: '100%',
         width: '100%',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: colors.PRIMARY_COLOR,
+    },
+    overlay: {
+        height: windowHeight * 0.8,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: windowHeight * 0.15,
+        borderBottomEndRadius: 200,
+        zIndex: 2,
+        elevation: 5,
+        backgroundColor: colors.BG_COLOR[THEME],
+    },
+    inputColumn: {
+        width: '100%',
+        alignItems: 'center',
+        marginVertical: 16,
+    },
+    buttonContainer: {
+        height: windowHeight * 0.5,
+        width: '100%',
+        marginTop: -300,
+        backgroundColor: colors.PRIMARY_COLOR,
+    },
+    buttonContainerPressable: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+    buttonContainerText: {
+        marginBottom: 48,
+        fontSize: 24,
+        fontWeight: '600',
+        color: colors.BG_COLOR[THEME],
+    },
+    actionRow: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'center',
     },
+    primaryText: {
+        fontSize: 48,
+        fontWeight: '600',
+        marginRight: 32,
+        color: colors.PRIMARY_COLOR,
+    },
+    primaryButton: {
+        height: 64,
+        width: 64,
+        backgroundColor: colors.PRIMARY_COLOR,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 64,
+        overflow: 'hidden',
+    },
+    primaryButtonInner: {
+        flex: 1,
+        height: '100%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 })
