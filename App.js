@@ -3,14 +3,12 @@ import { StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import TestPage from './pages/TestPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 import Home from './pages/Home'
-import Space from './pages/Space'
 import SpaceDrawer from './pages/SpaceDrawer'
 import store from './redux/store'
 import { Provider } from 'react-redux'
-
-console.error = () => undefined
-console.warn = () => undefined
 
 const Stack = createNativeStackNavigator()
 
@@ -19,6 +17,8 @@ function App() {
     <NavigationContainer style={styles.container}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="TestPage" component={TestPage} />
+        <Stack.Screen name="LoginPage" component={LoginPage} />
+        <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Space" component={SpaceDrawer} />
       </Stack.Navigator>
