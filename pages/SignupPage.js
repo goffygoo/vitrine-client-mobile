@@ -1,11 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
 import Button from "../components/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { themeSelector, toggleTheme } from "../redux/settingReducer";
 
-export default function TestPage({ route, navigation }) {
+export default function SignupPage({ route, navigation }) {
+    const dispatch = useDispatch();
+    const theme = useSelector(themeSelector);
+
     return (
         <View style={styles.container}>
-            <Text>Test Page</Text>
+            <Text>Signup Page</Text>
+            <Text>{theme}</Text>
             <Button text={"Click"} onPress={() => navigation.navigate('LoginPage')} />
+            <Button text={"Toggle"} onPress={() => dispatch(toggleTheme())} />
         </View>
     )
 }
