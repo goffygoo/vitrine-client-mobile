@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import { StyleSheet } from 'react-native'
+import { LogBox, StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import TestPage from './pages/TestPage'
@@ -10,14 +10,19 @@ import SpaceDrawer from './pages/SpaceDrawer'
 import store from './redux/store'
 import { Provider } from 'react-redux'
 
-const Stack = createNativeStackNavigator()
+// dev env only
+console.warn = () => undefined;
+console.error = () => undefined;
+
+const Stack = createNativeStackNavigator();
 
 function App() {
+  LogBox.ignoreAllLogs(true); // dev env only
   return (
     <NavigationContainer style={styles.container}>
       <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-        <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
+        <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="TestPage" component={TestPage} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Space" component={SpaceDrawer} />

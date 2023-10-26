@@ -1,23 +1,24 @@
 import { Dimensions, NativeModules, Pressable, StyleSheet, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { themeSelector } from "../redux/settingReducer";
 import colors from './../colors.json';
 import GoogleLogin from "../components/buttons/GoogleLogin";
 import { useMemo, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import TextInputBox from "../components/inputs/TextInputBox";
+import Select from "../components/inputs/Select";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
 const windowHeight = Dimensions.get('window').height;
 
 export default function SignupPage({ route, navigation }) {
-    const dispatch = useDispatch();
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [select, setSelect] = useState('');
 
     return (
         <View style={styles.container}>
@@ -27,6 +28,12 @@ export default function SignupPage({ route, navigation }) {
                     <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} />
                     <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} secureTextEntry />
                     <TextInputBox label={"Confirm Password"} value={confirmPassword} placeholder={'Confirm your password'} onChange={e => setConfirmPassword(e)} secureTextEntry />
+                    <Select label={"User Type"} value={select} placeholder={"Placeholder"} items={[
+                        { label: 'Consumer', value: 'Consumer' },
+                        { label: 'Provider', value: 'Provider' },
+                    ]}
+                        onChange={value => setSelect(value)}
+                    />
                 </View>
                 <View style={styles.actionRow}>
                     <Text style={styles.primaryText}>Sign Up</Text>
@@ -43,7 +50,6 @@ export default function SignupPage({ route, navigation }) {
             <View style={styles.buttonContainer}>
                 <Pressable
                     style={styles.buttonContainerPressable}
-                    android_ripple={{ color: colors.PRIMARY_COLOR_LIGHT }}
                     onPress={() => navigation.navigate('LoginPage')}
                 >
                     <Text style={styles.buttonContainerText}>Login Instead ?</Text>
@@ -67,7 +73,7 @@ const generateStyles = THEME => StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: windowHeight * 0.15,
+        paddingTop: windowHeight * 0.1,
         borderBottomEndRadius: 200,
         zIndex: 2,
         elevation: 5,
@@ -79,9 +85,8 @@ const generateStyles = THEME => StyleSheet.create({
         marginVertical: 16,
     },
     buttonContainer: {
-        height: windowHeight * 0.5,
+        height: windowHeight * 0.2,
         width: '100%',
-        marginTop: -300,
         backgroundColor: colors.PRIMARY_COLOR,
     },
     buttonContainerPressable: {
