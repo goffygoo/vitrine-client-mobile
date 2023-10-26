@@ -13,7 +13,7 @@ const windowHeight = Dimensions.get('window').height;
 export default function LoginPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
-
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -40,6 +40,7 @@ export default function LoginPage({ route, navigation }) {
             <View style={styles.buttonContainer}>
                 <Pressable
                     style={styles.buttonContainerPressable}
+                    android_ripple={{ color: colors.PRIMARY_COLOR_LIGHT }}
                     onPress={() => navigation.navigate('SignupPage')}
                 >
                     <Text style={styles.buttonContainerText}>Create an Account</Text>
@@ -57,7 +58,6 @@ const generateStyles = THEME => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: colors.PRIMARY_COLOR,
-
     },
     overlay: {
         height: windowHeight * 0.8,
@@ -75,8 +75,9 @@ const generateStyles = THEME => StyleSheet.create({
         marginVertical: 16,
     },
     buttonContainer: {
-        height: windowHeight * 0.2,
+        height: windowHeight * 0.5,
         width: '100%',
+        marginTop: -300,
         backgroundColor: colors.PRIMARY_COLOR,
     },
     buttonContainerPressable: {
