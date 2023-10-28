@@ -26,12 +26,17 @@ const SelectInput = ({ placeholder, value, items, onChange, styles, theme }) => 
 }
 
 
-export default function Select({ label, placeholder, value, items, onChange }) {
+export default function Select({ label, placeholder, value, items, onChange, size }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
+    const width = useMemo(() => {
+        return {
+            "expand": '100%'
+        }[size];
+    }, [size]);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {...(width && {width})}]}>
             {label ? <Text style={styles.label}>{label}</Text> : null}
             <SelectInput placeholder={placeholder} value={value} items={items} onChange={onChange} styles={styles} theme={theme} />
         </View>

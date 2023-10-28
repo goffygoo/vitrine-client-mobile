@@ -2,11 +2,11 @@ import { Dimensions, NativeModules, Pressable, StyleSheet, Text, View } from "re
 import { useSelector } from "react-redux";
 import { themeSelector } from "../redux/settingReducer";
 import colors from './../colors.json';
-import GoogleLogin from "../components/buttons/GoogleLogin";
+import GoogleLogin from "../components/widgets/GoogleLogin";
 import { useMemo, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import TextInputBox from "../components/inputs/TextInputBox";
-import Select from "../components/inputs/Select";
+import TextInputBox from "../components/widgets/TextInputBox";
+import Select from "../components/widgets/Select";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
 const windowHeight = Dimensions.get('window').height;
@@ -23,16 +23,17 @@ export default function SignupPage({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.overlay}>
-                <GoogleLogin />
+                <GoogleLogin size={'expand'} />
                 <View style={styles.inputColumn}>
-                    <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} />
-                    <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} secureTextEntry />
-                    <TextInputBox label={"Confirm Password"} value={confirmPassword} placeholder={'Confirm your password'} onChange={e => setConfirmPassword(e)} secureTextEntry />
+                    <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} size={'expand'} />
+                    <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} size={'expand'} secureTextEntry />
+                    <TextInputBox label={"Confirm Password"} value={confirmPassword} placeholder={'Confirm your password'} onChange={e => setConfirmPassword(e)} size={'expand'} secureTextEntry />
                     <Select label={"User Type"} value={select} placeholder={"Placeholder"} items={[
                         { label: 'Consumer', value: 'Consumer' },
                         { label: 'Provider', value: 'Provider' },
                     ]}
                         onChange={value => setSelect(value)}
+                        size={'expand'}
                     />
                 </View>
                 <View style={styles.actionRow}>
@@ -74,6 +75,7 @@ const generateStyles = THEME => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         paddingTop: windowHeight * 0.1,
+        paddingHorizontal: '15%',
         borderBottomEndRadius: 200,
         zIndex: 2,
         elevation: 5,
