@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import TestPage from './pages/TestPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import ForgetPasswordPage from './pages/ForgetPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import Home from './pages/Home'
 import SpaceDrawer from './pages/SpaceDrawer'
 import store from './redux/store'
@@ -23,9 +25,11 @@ function App() {
       <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="SignupPage" component={SignupPage} />
-        <Stack.Screen name="TestPage" component={TestPage} />
+        <Stack.Screen name="ForgetPasswordPage" component={ForgetPasswordPage} />
+        <Stack.Screen name="ResetPasswordPage" component={ResetPasswordPage} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Space" component={SpaceDrawer} />
+        <Stack.Screen name="TestPage" component={TestPage} />
       </Stack.Navigator>
     </NavigationContainer>
   )

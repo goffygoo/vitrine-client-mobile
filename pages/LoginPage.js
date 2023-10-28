@@ -2,9 +2,9 @@ import { Dimensions, NativeModules, Pressable, StyleSheet, Text, View } from "re
 import { useSelector } from "react-redux";
 import { themeSelector } from "../redux/settingReducer";
 import colors from './../colors.json';
-import GoogleLogin from "../components/buttons/GoogleLogin";
+import GoogleLogin from "../components/widgets/GoogleLogin";
 import { useMemo, useState } from "react";
-import TextInputBox from "../components/inputs/TextInputBox";
+import TextInputBox from "../components/widgets/TextInputBox";
 import { AntDesign } from "@expo/vector-icons";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
@@ -18,12 +18,12 @@ export default function LoginPage({ route, navigation }) {
     const [password, setPassword] = useState('');
 
     return (
-        <View style={styles.container}>
-            <View style={styles.overlay}>
-                <GoogleLogin />
+        <View style={styles.container} >
+            <View style={styles.overlay} >
+                <GoogleLogin size={'expand'} />
                 <View style={styles.inputColumn}>
-                    <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} />
-                    <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} secureTextEntry />
+                    <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} size={'expand'} />
+                    <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} size={'expand'} secureTextEntry />
                 </View>
                 <View style={styles.actionRow}>
                     <Text style={styles.primaryText}>Login</Text>
@@ -64,6 +64,7 @@ const generateStyles = THEME => StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingHorizontal: '15%',
         borderBottomStartRadius: 200,
         zIndex: 2,
         elevation: 5,
@@ -71,7 +72,6 @@ const generateStyles = THEME => StyleSheet.create({
     },
     inputColumn: {
         width: '100%',
-        alignItems: 'center',
         marginVertical: 16,
     },
     buttonContainer: {

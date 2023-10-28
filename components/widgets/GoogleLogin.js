@@ -11,9 +11,15 @@ GoogleSignin.configure({
     offlineAccess: true,
 });
 
-export default function GoogleLogin() {
+export default function GoogleLogin({size}) {
     const theme = useSelector(themeSelector);
-    const styles = useMemo(() => generateStyles(theme), [theme])
+    const styles = useMemo(() => generateStyles(theme), [theme]);
+    const width = useMemo(() => {
+        return {
+            "expand": '100%'
+        }[size];
+    }, [size]);
+
 
     const signIn = async () => {
         try {
@@ -40,7 +46,7 @@ export default function GoogleLogin() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {...(width && {width})}]}>
             <Pressable style={styles.pressable} android_ripple={{ color: colors.BG_COLOR_SECONDARY[theme] }} onPress={signIn}>
                 <Image style={styles.googleLogo} source={require('../../assets/Google_Logo.png')} />
                 <Text style={styles.text}>Login With Google</Text>
@@ -54,29 +60,27 @@ const generateStyles = THEME => StyleSheet.create({
     container: {
         height: 50,
         width: 250,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: colors.BG_COLOR_SHARP[THEME],
         borderWidth: 1,
-        borderRadius: 2,
-        borderColor: colors.TEXT_COLOR[THEME]
+        borderRadius: 4,
+        paddingHorizontal: 16,
+        borderColor: colors.TEXT_COLOR[THEME],
     },
     pressable: {
-        flex: 1,
         height: '100%',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         flexDirection: 'row',
     },
     text: {
         color: colors.TEXT_COLOR[THEME],
         fontSize: 16,
         fontWeight: '500',
+        
     },
     googleLogo: {
         height: 25,
         width: 25,
-        marginRight: 25
     }
 })
