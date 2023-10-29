@@ -5,7 +5,7 @@ export default function TestPage({ route, navigation }) {
     return (
         <View style={styles.container}>
             <Text>Test Page</Text>
-            <Button text={"Click"} onPress={() => navigation.navigate('LoginPage')} />
+            <Button text={"Click"} onPress={() => navigation.navigate('Home')} />
         </View>
     )
 }
