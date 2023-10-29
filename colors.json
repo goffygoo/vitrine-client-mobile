@@ -1,6 +1,8 @@
 {
+    "AND_RIPPLE_LIGHT": "#FCFCFC80",
     "PRIMARY_COLOR": "#FDA92D",
     "PRIMARY_COLOR_DARK": "#C48C00", 
+    "WARNING_COLOR": "#DC0000",
     "PRIMARY_COLOR_LIGHT": "#FFC24C",
         "BG_COLOR": {
         "DARK": "#1A1D1F",
