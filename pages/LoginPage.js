@@ -4,7 +4,7 @@ import { themeSelector } from "../redux/settingReducer";
 import colors from './../colors.json';
 import GoogleLogin from "../components/widgets/GoogleLogin";
 import { useMemo, useState } from "react";
-import TextInputBox from "../components/widgets/TextInputBox";
+import TextInputBox from "../components/widgets/input/TextInputBox";
 import { AntDesign } from "@expo/vector-icons";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;

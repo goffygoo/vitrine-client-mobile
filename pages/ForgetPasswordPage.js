@@ -4,7 +4,7 @@ import { themeSelector } from "../redux/settingReducer";
 import colors from './../colors.json';
 import { useMemo, useState } from "react";
 import PrimaryButton from "../components/widgets/buttons/PrimaryButton";
-import TextInputBox from "../components/widgets/TextInputBox";
+import TextInputBox from "../components/widgets/input/TextInputBox";
 import Divider from "../components/widgets/Divider";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
