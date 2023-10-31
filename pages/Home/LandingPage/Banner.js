@@ -1,8 +1,8 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { themeSelector } from '../../redux/settingReducer';
+import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
-import colors from '../../colors.json';
+import colors from '../../../colors.json';
 
 export default function Banner() {
     const theme = useSelector(themeSelector)
@@ -12,10 +12,10 @@ export default function Banner() {
         <View style={styles.container}>
             <Pressable
                 style={styles.pressable}
-                android_ripple={{ color: colors.AND_RIPPLE_LIGHT, foreground: true }}
+                android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
             >
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={require('../../assets/EventCover.png')} />
+                    <Image style={styles.image} source={require('../../../assets/EventCover.png')} />
                 </View>
                 <View style={styles.description}>
                     <View style={styles.descriptionDateTime}>

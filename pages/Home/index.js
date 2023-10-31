@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import SpacesPage from './SpacesPage';
@@ -22,7 +22,8 @@ export default function Home({ route, navigation }) {
                     headerShown: false,
                     tabBarShowLabel: false,
                 })}
-                initialRouteName='LandingPage'
+                // initialRouteName='LandingPage'
+                initialRouteName='ProfilePage'
                 backBehavior='initialRoute'
             >
                 <BottomTab.Screen

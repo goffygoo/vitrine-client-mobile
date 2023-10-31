@@ -1,10 +1,10 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { themeSelector } from '../../redux/settingReducer';
+import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from "react";
-import colors from '../../colors.json';
-import UpcomingTile from "../../components/LandingPage/UpcomingTile";
-import Banner from "../../components/LandingPage/Banner";
+import colors from '../../../colors.json';
+import UpcomingTile from "./UpcomingTile";
+import Banner from "./Banner";
 
 export default function LandingPage({ route, navigation }) {
     const theme = useSelector(themeSelector)

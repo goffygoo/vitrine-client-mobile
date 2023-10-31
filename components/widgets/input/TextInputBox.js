@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import { useSelector } from "react-redux";
-import { themeSelector } from "../../redux/settingReducer";
-import colors from '../../colors.json';
+import { themeSelector } from "../../../redux/settingReducer";
+import colors from '../../../colors.json';
 
 export default function TextInputBox({ label, placeholder, value, onChange, secureTextEntry, type, size }) {
     const theme = useSelector(themeSelector);

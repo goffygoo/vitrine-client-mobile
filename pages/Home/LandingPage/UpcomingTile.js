@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, Pressable, Image } from 'react-native'
-import colors from '../../colors.json';
+import colors from '../../../colors.json';
 import { useSelector } from 'react-redux';
-import { themeSelector } from '../../redux/settingReducer';
+import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
 
 export default function UpcomingTile() {
@@ -10,9 +10,9 @@ export default function UpcomingTile() {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.pressable} android_ripple={{ color: colors.AND_RIPPLE_LIGHT }}>
+      <Pressable style={styles.pressable} android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={require('../../assets/EventCover.png')} />
+          <Image style={styles.image} source={require('../../../assets/EventCover.png')} />
         </View>
         <View style={styles.description}>
           <Text style={styles.descriptionHeading}>
@@ -34,7 +34,7 @@ const generateStyles = THEME => StyleSheet.create({
   container: {
     height: 144,
     width: 160,
-    backgroundColor: colors.TEXT_COLOR[THEME],
+    backgroundColor: colors.TEXT_COLOR_LIGHT[THEME],
     borderRadius: 4,
     overflow: 'hidden',
     elevation: 4,

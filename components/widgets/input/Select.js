@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { themeSelector } from "../../redux/settingReducer";
-import colors from '../../colors.json';
+import { themeSelector } from "../../../redux/settingReducer";
+import colors from '../../../colors.json';
 import { Picker } from "@react-native-picker/picker";
 
 const SelectInput = ({ placeholder, value, items, onChange, styles, theme }) => {
@@ -24,7 +24,6 @@ const SelectInput = ({ placeholder, value, items, onChange, styles, theme }) => 
         </View>
     )
 }
-
 
 export default function Select({ label, placeholder, value, items, onChange, size }) {
     const theme = useSelector(themeSelector);

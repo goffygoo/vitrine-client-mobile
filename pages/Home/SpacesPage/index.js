@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
-import Button from "../../components/Button";
+import Button from "../../../components/Button";
 
-export default function ProfilePage({ route, navigation }) {
+export default function SpacesPage({ route, navigation }) {
     return (
         <View style={styles.container}>
-            <Text>Profile Page</Text>
+            <Text>Spaces Page</Text>
             <Button text={"Click"} onPress={() => navigation.navigate('TestPage')} />
+            <Button text={"Go to Space"} onPress={() => navigation.navigate('Space')} />
         </View>
     )
 }

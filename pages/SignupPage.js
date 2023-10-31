@@ -5,8 +5,8 @@ import colors from './../colors.json';
 import GoogleLogin from "../components/widgets/GoogleLogin";
 import { useMemo, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import TextInputBox from "../components/widgets/TextInputBox";
-import Select from "../components/widgets/Select";
+import TextInputBox from "../components/widgets/input/TextInputBox";
+import Select from "../components/widgets/input/Select";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
 const windowHeight = Dimensions.get('window').height;
