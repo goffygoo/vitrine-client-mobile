@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { themeSelector } from '../../../redux/settingReducer'
 import colors from '../../../colors.json';
 
-export default function SectionBlock({ children, title }) {
+export default function SectionBlock({ children, title, onEdit }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
     const imageURI = theme === 'DARK' ? require('../../../assets/EditLight.png') : require('../../../assets/EditDark.png');
@@ -15,13 +15,17 @@ export default function SectionBlock({ children, title }) {
                 <View style={styles.titleBox}>
                     <Text style={styles.title}>{title}</Text>
                 </View>
-                <Pressable
-                    style={styles.editPressable}
-                    android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
-                    onPress={() => undefined}
-                >
-                    <Image style={styles.editImage} source={imageURI} />
-                </Pressable>
+                {
+                    onEdit ?
+                        <Pressable
+                            style={styles.editPressable}
+                            android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
+                            onPress={onEdit}
+                        >
+                            <Image style={styles.editImage} source={imageURI} />
+                        </Pressable>
+                        : null
+                }
             </View>
             {Children.map(children, child => child)}
         </View>
@@ -30,7 +34,6 @@ export default function SectionBlock({ children, title }) {
 
 const generateStyles = THEME => StyleSheet.create({
     container: {
-        height: 200,
         width: '100%',
         borderColor: colors.TEXT_COLOR_ALT[THEME],
         borderWidth: 1,

@@ -4,6 +4,7 @@
         "LIGHT": "#FCFCFC80"
     },
     "SHADE_1": "#AFE5B1",
+    "SHADE_2": "#AF96F6",
     "PRIMARY_COLOR": "#FDA92D",
     "PRIMARY_COLOR_DARK": "#C48C00",
     "WARNING_COLOR": "#DC0000",
