@@ -23,7 +23,7 @@ export default function Home({ route, navigation }) {
                     tabBarShowLabel: false,
                 })}
                 // initialRouteName='LandingPage'
-                initialRouteName='ProfilePage'
+                initialRouteName='SpacesPage'
                 backBehavior='initialRoute'
             >
                 <BottomTab.Screen
