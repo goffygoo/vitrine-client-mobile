@@ -1,27 +1,32 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
 import colors from '../../../colors.json';
 
-export default function Tile() {
+export default function Tile({ onClick }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     return (
         <View style={styles.container}>
-            <Image style={styles.bannerImage} source={require('../../../assets/cover_space.jpg')} resizeMode='cover' />
-            <View style={styles.profileImageContainer}>
-                <Image style={styles.profileImage} source={require('../../../assets/avatar_a.jpg')} resizeMode='contain' />
-            </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.heading}>Title goes here hehe</Text>
-                <Text style={styles.subHeading}>Subtitle goes brr</Text>
-            </View>
-            <View style={styles.footer}>
-                <Text style={styles.footerText}><Text style={styles.footerTextEmphasis}>7</Text> new messages</Text>
-            </View>
-
+            <Pressable
+                style={styles.pressable}
+                android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
+                onPress={onClick}
+            >
+                <Image style={styles.bannerImage} source={require('../../../assets/cover_space.jpg')} resizeMode='cover' />
+                <View style={styles.profileImageContainer}>
+                    <Image style={styles.profileImage} source={require('../../../assets/avatar_a.jpg')} resizeMode='contain' />
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.heading}>Title goes here hehe</Text>
+                    <Text style={styles.subHeading}>Subtitle goes brr</Text>
+                </View>
+                <View style={styles.footer}>
+                    <Text style={styles.footerText}><Text style={styles.footerTextEmphasis}>7</Text> new messages</Text>
+                </View>
+            </Pressable>
         </View>
     )
 }
@@ -35,6 +40,15 @@ const generateStyles = THEME => StyleSheet.create({
         elevation: 4,
         shadowColor: colors.TEXT_COLOR[THEME],
         overflow: 'hidden',
+    },
+    pressable: {
+        // width: '45%',
+        // backgroundColor: 'red',
+        // backgroundColor: colors.BG_COLOR_MODAL[THEME],
+        // borderRadius: 8,
+        // elevation: 4,
+        // shadowColor: colors.TEXT_COLOR[THEME],
+        // overflow: 'hidden',
     },
     bannerImage: {
         height: 64,

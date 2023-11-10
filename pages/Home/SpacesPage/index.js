@@ -15,19 +15,19 @@ export default function SpacesPage({ route, navigation }) {
                 <Text style={styles.heading}>My Spaces</Text>
 
                 <View style={styles.tileRow}>
-                    <Tile />
-                    <Tile />
+                    <Tile onClick={() => navigation.navigate('Space')} />
+                    <Tile onClick={() => navigation.navigate('Space')} />
                 </View>
                 <View style={styles.tileRow}>
-                    <Tile />
-                    <Tile />
+                    <Tile onClick={() => navigation.navigate('Space')} />
+                    <Tile onClick={() => navigation.navigate('Space')} />
                 </View>
                 <View style={styles.tileRow}>
-                    <Tile />
-                    <Tile />
+                    <Tile onClick={() => navigation.navigate('Space')} />
+                    <Tile onClick={() => navigation.navigate('Space')} />
                 </View>
                 <View style={styles.tileRow}>
-                    <Tile />
+                    <Tile onClick={() => navigation.navigate('Space')} />
                 </View>
             </View>
         </ScrollView>
