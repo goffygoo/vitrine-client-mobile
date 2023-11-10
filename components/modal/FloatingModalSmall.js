@@ -7,7 +7,7 @@ import colors from '../../colors.json';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-export default function SmallModal({ children, visible, closeModal }) {
+export default function FloatingModalSmall({ children, visible, closeModal }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
@@ -31,7 +31,7 @@ export default function SmallModal({ children, visible, closeModal }) {
 const generateStyles = THEME => StyleSheet.create({
     pressableFade: {
         flex: 1,
-        backgroundColor: colors.AND_RIPPLE[THEME],
+        backgroundColor: colors.FADE[THEME],
         alignItems: 'center',
         justifyContent: 'center',
     },

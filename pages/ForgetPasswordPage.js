@@ -33,7 +33,7 @@ export default function ForgetPasswordPage({ route, navigation }) {
                 <PrimaryButton
                     text={'Send Reset Link'}
                     onPress={() => undefined}
-                    size={'expand'}
+                    width={'100%'}
                 />
             </View>
         </View>

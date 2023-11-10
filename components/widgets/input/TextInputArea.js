@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { themeSelector } from "../../../redux/settingReducer";
 import colors from '../../../colors.json';
 
-export default function TextInputBox({ label, placeholder, value, onChange, secureTextEntry, type, size }) {
+export default function TextInputArea({ label, placeholder, value, onChange, type, size }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
     const width = useMemo(() => {
@@ -22,8 +22,9 @@ export default function TextInputBox({ label, placeholder, value, onChange, secu
         <View style={[styles.container, { ...(width && { width }) }]}>
             {label ? <Text style={styles.label}>{label}</Text> : null}
             <TextInput
+                multiline
+                numberOfLines={6}
                 value={value}
-                secureTextEntry={secureTextEntry}
                 placeholder={placeholder}
                 placeholderTextColor={colors.INPUT_TEXT_COLOR_LIGHT[theme]}
                 style={[styles.input, { ...(changeBackground) }]}
@@ -43,12 +44,14 @@ const generateStyles = THEME => StyleSheet.create({
     input: {
         fontSize: 20,
         paddingHorizontal: 8,
-        paddingVertical: 4,
+        paddingVertical: 8,
         width: '100%',
+        maxHeight: 240,
         backgroundColor: colors.INPUT_BG_COLOR[THEME],
         color: colors.INPUT_TEXT_COLOR[THEME],
         fontWeight: '600',
         borderRadius: 4,
+        textAlignVertical: 'top',
     },
     label: {
         paddingHorizontal: 8,

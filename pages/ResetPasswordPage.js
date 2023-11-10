@@ -43,7 +43,7 @@ export default function ResetPasswordPage({ route, navigation }) {
                 <PrimaryButton
                     text={'Reset Password'}
                     onPress={() => undefined}
-                    size={'expand'}
+                    width={'100%'}
                 />
             </View>
         </View>

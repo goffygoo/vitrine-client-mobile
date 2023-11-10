@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from "react";
@@ -11,29 +11,49 @@ export default function LandingPage({ route, navigation }) {
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.bannerContainer}>
-                <Text style={styles.bannerStatus}>Live Now</Text>
-                <Banner />
-            </View>
-
-            <View style={styles.upcomingSection}>
-                <Text style={styles.heading}>Upcoming Events</Text>
-
-                <View style={styles.upcomingSectionRow}>
-                    <UpcomingTile />
-                    <UpcomingTile />
+        <ScrollView style={styles.scroll}>
+            <View style={styles.container}>
+                <View style={styles.bannerContainer}>
+                    <Text style={styles.bannerStatus}>Live Now</Text>
+                    <Banner />
                 </View>
-                <View style={styles.upcomingSectionRow}>
-                    <UpcomingTile />
-                    <UpcomingTile />
+
+                <View style={styles.upcomingSection}>
+                    <Text style={styles.heading}>Upcoming Events</Text>
+
+                    <View style={styles.upcomingSectionRow}>
+                        <UpcomingTile />
+                        <UpcomingTile />
+                    </View>
+                    <View style={styles.upcomingSectionRow}>
+                        <UpcomingTile />
+                        <UpcomingTile />
+                    </View>
+                    <View style={styles.upcomingSectionRow}>
+                        <UpcomingTile />
+                        <UpcomingTile />
+                    </View>
+                    <View style={styles.upcomingSectionRow}>
+                        <UpcomingTile />
+                        <UpcomingTile />
+                    </View>
+                    <View style={styles.upcomingSectionRow}>
+                        <UpcomingTile />
+                        <UpcomingTile />
+                    </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
 const generateStyles = THEME => StyleSheet.create({
+    scrollContainer: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        backgroundColor: colors.BG_COLOR[THEME],
+    },
     container: {
         flex: 1,
         height: '100%',
@@ -43,6 +63,7 @@ const generateStyles = THEME => StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     bannerContainer: {
+        marginTop: 16,
         alignItems: 'flex-end',
     },
     bannerStatus: {
@@ -59,6 +80,7 @@ const generateStyles = THEME => StyleSheet.create({
         shadowColor: colors.TEXT_COLOR[THEME],
     },
     upcomingSection: {
+        marginTop: 32,
         width: '90%',
     },
     upcomingSectionRow: {

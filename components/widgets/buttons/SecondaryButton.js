@@ -4,23 +4,18 @@ import { themeSelector } from "../../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../../colors.json';
 
-export default function SecondaryButton({ text, onClick, size }) {
+export default function SecondaryButton({ text, onClick, height = 48, width, fontSize = 24 }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
-    const width = useMemo(() => {
-        return {
-            "expand": '100%'
-        }[size];
-    }, [size]);
 
     return (
-        <View style={[styles.container, {...(width && {width})}]}>
+        <View style={[styles.container, {height, width}]}>
             <Pressable
                 style={styles.pressable}
                 android_ripple={{ color: colors.TEXT_COLOR_LIGHT[theme] }}
                 onPress={onClick}
             >
-                <Text style={styles.text}>{text}</Text>
+                <Text style={[styles.text, {fontSize}]}>{text}</Text>
             </Pressable>
         </View>
     )
@@ -30,7 +25,7 @@ const generateStyles = THEME => StyleSheet.create({
     container: {
         height: 48,
         backgroundColor: colors.TEXT_COLOR[THEME],
-        borderRadius: 8,
+        borderRadius: 4,
         overflow: 'hidden',
     },
     pressable: {
