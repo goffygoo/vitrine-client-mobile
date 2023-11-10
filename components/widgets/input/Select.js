@@ -5,27 +5,27 @@ import { themeSelector } from "../../../redux/settingReducer";
 import colors from '../../../colors.json';
 import { Picker } from "@react-native-picker/picker";
 
-const SelectInput = ({ placeholder, value, items, onChange, styles, theme }) => {
+const SelectInput = ({ placeholder, value, items, onChange, styles, theme, changeBackground }) => {
     return (
         <View style={styles.wrapperContainer}>
             <Picker
                 selectedValue={value}
                 onValueChange={(itemValue) => onChange(itemValue)}
                 mode="dropdown"
-                style={styles.picker}
+                style={[styles.picker, { ...(changeBackground) }]}
                 dropdownIconRippleColor={colors.INPUT_TEXT_COLOR_LIGHT[theme]}
                 dropdownIconColor={colors.INPUT_TEXT_COLOR_LIGHT[theme]}
             >
-                {value === '' ? <Picker.Item style={styles.pickerPlaceholder} value='' label={placeholder} /> : null}
+                {value === '' ? <Picker.Item style={[styles.pickerPlaceholder, { ...(changeBackground) }]} value='' label={placeholder} /> : null}
                 {
-                    items.map(({ label, value }) => <Picker.Item style={styles.picker} label={label} value={value} />)
+                    items.map(({ label, value }) => <Picker.Item style={[styles.picker, { ...(changeBackground) }]} label={label} value={value} />)
                 }
             </Picker>
         </View>
     )
 }
 
-export default function Select({ label, placeholder, value, items, onChange, size }) {
+export default function Select({ label, placeholder, value, items, onChange, type, size }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
     const width = useMemo(() => {
@@ -33,11 +33,16 @@ export default function Select({ label, placeholder, value, items, onChange, siz
             "expand": '100%'
         }[size];
     }, [size]);
+    const changeBackground = useMemo(() => {
+        return {
+            'light': { backgroundColor: colors.BG_COLOR[theme], color: colors.TEXT_COLOR[theme] }
+        }[type];
+    }, [type, theme]);
 
     return (
-        <View style={[styles.container, {...(width && {width})}]}>
+        <View style={[styles.container, { ...(width && { width }) }]}>
             {label ? <Text style={styles.label}>{label}</Text> : null}
-            <SelectInput placeholder={placeholder} value={value} items={items} onChange={onChange} styles={styles} theme={theme} />
+            <SelectInput placeholder={placeholder} value={value} items={items} onChange={onChange} styles={styles} theme={theme} changeBackground={changeBackground} />
         </View>
     )
 }

@@ -3,8 +3,13 @@
         "DARK": "#1A1D1F80",
         "LIGHT": "#FCFCFC80"
     },
+    "FADE": {
+        "DARK": "#1A1D1FB2",
+        "LIGHT": "#FCFCFCB2"
+    },
     "SHADE_1": "#AFE5B1",
     "SHADE_2": "#AF96F6",
+    "ACCENT_1": "#61F3F3",
     "PRIMARY_COLOR": "#FDA92D",
     "PRIMARY_COLOR_DARK": "#C48C00",
     "WARNING_COLOR": "#DC0000",
@@ -38,7 +43,7 @@
         "LIGHT": "#D0D0D0"
     },
     "BG_COLOR_MODAL": {
-        "DARK": "#212B36",
+        "DARK": "#272B30",
         "LIGHT": "#EFEFEF"
     },
     "INPUT_BG_COLOR": {

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { themeSelector } from '../../redux/settingReducer';
 import { useMemo, useState } from 'react';
 import colors from '../../colors.json';
-import SmallModal from '../modal/SmallModal';
+import FloatingModalSmall from '../modal/FloatingModalSmall';
 
 export default function TipModal({ text }) {
     const theme = useSelector(themeSelector);
@@ -13,12 +13,12 @@ export default function TipModal({ text }) {
 
     return (
         <>
-            <SmallModal
+            <FloatingModalSmall
                 visible={showModal}
                 closeModal={() => setShowModal(false)}
             >
                 <Text style={styles.text}>{text}</Text>
-            </SmallModal>
+            </FloatingModalSmall>
             <View style={styles.container}>
                 <Pressable
                     style={styles.image}
