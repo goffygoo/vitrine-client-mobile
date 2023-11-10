@@ -11,7 +11,7 @@ export default function LandingPage({ route, navigation }) {
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     return (
-        <ScrollView style={styles.scroll}>
+        <ScrollView style={styles.scrollContainer}>
             <View style={styles.container}>
                 <View style={styles.bannerContainer}>
                     <Text style={styles.bannerStatus}>Live Now</Text>
