@@ -13,6 +13,7 @@ import store from './redux/store'
 import { Provider, useSelector } from 'react-redux'
 import { themeSelector } from './redux/settingReducer';
 import colors from './colors.json'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 // dev env only
 console.warn = () => undefined;
@@ -29,8 +30,8 @@ function App() {
       <SafeAreaView style={styles.container}>
         <NavigationContainer style={styles.container}>
           <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-            <Stack.Screen name="TestPage" component={TestPage} />
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="TestPage" component={TestPage} />
             <Stack.Screen name="LoginPage" component={LoginPage} />
             <Stack.Screen name="SignupPage" component={SignupPage} />
             <Stack.Screen name="ForgetPasswordPage" component={ForgetPasswordPage} />
@@ -54,7 +55,9 @@ const styles = StyleSheet.create({
 export default function Wrapper() {
   return (
     <Provider store={store}>
-      <App />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <App />
+      </GestureHandlerRootView>
     </Provider>
   )
 }
