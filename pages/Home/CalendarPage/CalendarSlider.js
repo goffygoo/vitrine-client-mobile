@@ -10,7 +10,6 @@ import colors from '../../../colors.json';
 const WIDTH = 350;
 const HORIZONTAL_MARGIN = 50;
 const VERTICAL_MARGIN = 10;
-const HEIGHT = 400;
 
 export default function CalenderSlider({
     SliderChild,
@@ -19,6 +18,8 @@ export default function CalenderSlider({
     addItemBack,
     squareOne,
     edgesFill,
+    HEIGHT = 400,
+    INNER_HEIGHT,
 }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
@@ -38,7 +39,7 @@ export default function CalenderSlider({
 
         if (fill) edgesFill();
         else addItemFront();
-        
+
         setActiveAnimation(false);
     }
 
@@ -116,9 +117,9 @@ export default function CalenderSlider({
                                 return (
                                     <Animated.View
                                         style={{
+                                            ...(INNER_HEIGHT && { height: INNER_HEIGHT }),
                                             width: WIDTH,
                                             position: 'absolute',
-                                            height: HEIGHT,
                                             borderColor: colors.BG_COLOR_MODAL[theme],
                                             borderWidth: 2,
                                             borderRadius: 8,
@@ -128,25 +129,18 @@ export default function CalenderSlider({
                                             transform: [{ translateX: translateX }],
                                         }}
                                     >
-                                        <View style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-around',
-                                            height: 48,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-
-                                        }}>
-                                            <Pressable onPress={moveLeft}>
-                                                <AntDesign name="left" size={24} color="black" />
+                                        <View style={styles.cardHeaderRow}>
+                                            <Pressable onPress={() => moveRight()}>
+                                                <AntDesign name="left" size={24} color={colors.TEXT_COLOR[theme]} />
                                             </Pressable>
                                             <Text style={styles.cardHeaderText}>{sliderData[index].title}</Text>
-                                            <Pressable onPress={moveRight}>
-                                                <AntDesign name="right" size={24} color="black" />
+                                            <Pressable onPress={() => moveLeft()}>
+                                                <AntDesign name="right" size={24} color={colors.TEXT_COLOR[theme]} />
                                             </Pressable>
                                             <View style={styles.todayButton}>
                                                 <Pressable
                                                     style={styles.todayButtonPressable}
-                                                    onPress={moveToToday}
+                                                    onPress={() => moveToToday()}
                                                 >
                                                     <Text style={styles.todayButtonText}>Today</Text>
                                                 </Pressable>
@@ -165,9 +159,15 @@ export default function CalenderSlider({
 }
 
 const generateStyles = THEME => StyleSheet.create({
+    cardHeaderRow: {
+        flexDirection: 'row',
+        height: 48,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     cardHeaderText: {
         fontSize: 16,
-        paddingHorizontal: 8,
+        paddingHorizontal: 16,
         fontWeight: '500',
         color: colors.TEXT_COLOR[THEME],
     },

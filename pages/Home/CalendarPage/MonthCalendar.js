@@ -138,6 +138,7 @@ export default function MonthCalendar() {
             addItemFront={addItemFront}
             squareOne={squareOne}
             edgesFill={edgesFill}
+            HEIGHT={500}
         />
     )
 }

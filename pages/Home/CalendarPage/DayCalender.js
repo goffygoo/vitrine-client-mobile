@@ -5,7 +5,38 @@ import { DAYS_LIST, MONTHS_LIST } from '../../../constants';
 import DayCalenderSlide from "./DayCalenderSlide";
 
 const getFullSchedule = (year, month, date) => {
-    return [];
+    return [
+        {
+            startTime: '10:00 am',
+            endTime: '12:30 pm',
+            title: 'Daily Sync up',
+            color: '#AF96F6',
+        }, 
+        {
+            startTime: '10:00 am',
+            endTime: '12:30 pm',
+            title: 'Global Event',
+            color: '#AFE5B1',
+        },
+        {
+            startTime: '10:00 am',
+            endTime: '12:30 pm',
+            title: 'Event I',
+            color: '#788DFF',
+        },
+        {
+            startTime: '10:00 am',
+            endTime: '12:30 pm',
+            title: 'Event II',
+            color: '#FFBF90',
+        },
+        {
+            startTime: '10:00 am',
+            endTime: '12:30 pm',
+            title: 'Town Hall meeting',
+            color: '#AAD6EE',
+        },
+    ];
 }
 
 const getCalenderData = (year, month, date) => {
@@ -107,6 +138,7 @@ export default function DayCalender() {
             addItemFront={addItemFront}
             squareOne={squareOne}
             edgesFill={edgesFill}
+            HEIGHT={600}
         />
     )
 }

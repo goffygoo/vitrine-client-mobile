@@ -30,8 +30,8 @@ function App() {
       <SafeAreaView style={styles.container}>
         <NavigationContainer style={styles.container}>
           <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-            <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="TestPage" component={TestPage} />
+            <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="LoginPage" component={LoginPage} />
             <Stack.Screen name="SignupPage" component={SignupPage} />
             <Stack.Screen name="ForgetPasswordPage" component={ForgetPasswordPage} />
