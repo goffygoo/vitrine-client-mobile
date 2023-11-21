@@ -17,7 +17,7 @@ export default function CalendarPage({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.headerRow}>
-                <Text>Daily View</Text>
+                <Text style={styles.headerRowText}>Daily View</Text>
                 <ToggleSwitch
                     value={dayView}
                     onValueChange={toggleDayView}
@@ -36,12 +36,19 @@ const generateStyles = THEME => StyleSheet.create({
         height: '100%',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: 32,
         backgroundColor: colors.BG_COLOR[THEME],
     },
     headerRow: {
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
+        width: '90%',
+        marginBottom: 16,
+    },
+    headerRowText: {
+        fontSize: 16,
+        fontWeight: '500',
+        marginHorizontal: 32,
+        color: colors.TEXT_COLOR[THEME],
     }
 })

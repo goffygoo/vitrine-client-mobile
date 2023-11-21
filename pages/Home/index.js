@@ -22,8 +22,7 @@ export default function Home({ route, navigation }) {
                     headerShown: false,
                     tabBarShowLabel: false,
                 })}
-                // initialRouteName='LandingPage'
-                initialRouteName='CalendarPage'
+                initialRouteName='LandingPage'
                 backBehavior='initialRoute'
             >
                 <BottomTab.Screen
