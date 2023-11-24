@@ -7,6 +7,10 @@
         "DARK": "#1A1D1FB2",
         "LIGHT": "#FCFCFCB2"
     },
+    "FADE_REVERSE": {
+        "DARK": "#FCFCFCB2",
+        "LIGHT": "#1A1D1FB2"
+    },
     "SHADE_1": "#AFE5B1",
     "SHADE_2": "#AF96F6",
     "ACCENT_1": "#61F3F3",
