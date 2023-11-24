@@ -35,6 +35,7 @@ export default function Space({ route, navigation }) {
                             return <Ionicons name={iconName} size={size} color={color} />
                         })
                     }}
+                    initialParams={route.params}
                 />
 
                 <BottomTab.Screen
@@ -46,6 +47,7 @@ export default function Space({ route, navigation }) {
                             return <Ionicons name={iconName} size={size} color={color} />
                         })
                     }}
+                    initialParams={route.params}
                 />
 
                 <BottomTab.Screen
@@ -57,6 +59,7 @@ export default function Space({ route, navigation }) {
                             return <Ionicons name={iconName} size={size} color={color} />
                         })
                     }}
+                    initialParams={route.params}
                 />
 
                 <BottomTab.Screen
@@ -68,6 +71,7 @@ export default function Space({ route, navigation }) {
                             return <Ionicons name={iconName} size={size} color={color} />
                         })
                     }}
+                    initialParams={route.params}
                 />
 
                 <BottomTab.Screen
@@ -79,6 +83,7 @@ export default function Space({ route, navigation }) {
                             return <Ionicons name={iconName} size={size} color={color} />
                         })
                     }}
+                    initialParams={route.params}
                 />
             </BottomTab.Navigator>
         </View>

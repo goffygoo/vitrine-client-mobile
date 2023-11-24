@@ -1,14 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import testReducer from './testSlice'
 import settingReducer from './settingReducer'
+import spacesReducer from './spacesReducer'
 
 export default configureStore({
     reducer: {
-        test: testReducer,
         setting: settingReducer,
+        spaces: spacesReducer,
     },
-//     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-//         immutableCheck: false,
-//         serializableCheck: false,
-//     })
 })
