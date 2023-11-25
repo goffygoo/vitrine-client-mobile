@@ -6,6 +6,7 @@ import { activeSpaceDataSelector } from "../../../redux/spacesReducer";
 import colors from '../../../colors.json';
 import HeaderAndScroll from "../components/HeaderAndScroll";
 import TextInputArea from "../../../components/widgets/input/TextInputArea";
+import ChatCard from "./ChatCard";
 
 export default function ChatPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
@@ -23,20 +24,44 @@ export default function ChatPage({ route, navigation }) {
                 hasRightDrawer
             >
                 <View style={styles.scrollInner}>
-                    {
-                        Array(boxes).fill(1).map(() => {
-                            return (
-                                <View
-                                    style={{
-                                        width: 50,
-                                        height: 50,
-                                        margin: 16,
-                                        backgroundColor: color,
-                                    }}
-                                ></View>
-                            )
-                        })
-                    }
+                    <View style={styles.chatWrapper}>
+                        {
+                            Array(3).fill(1).map(() => {
+                                return (
+                                    <ChatCard
+                                        person={{
+                                            name: 'Sunilium',
+                                            isAdmin: false,
+                                        }}
+                                        time="21 Oct 12:31"
+                                        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                                    />
+                                )
+                            })
+                        }
+                        <ChatCard
+                            person={{
+                                name: 'Captain Baljeet',
+                                isAdmin: true,
+                            }}
+                            time="21 Oct 12:31"
+                            text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                        />
+                        {
+                            Array(7).fill(1).map(() => {
+                                return (
+                                    <ChatCard
+                                        person={{
+                                            name: 'Crazy Alina',
+                                            isAdmin: false,
+                                        }}
+                                        time="21 Oct 12:31"
+                                        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                                    />
+                                )
+                            })
+                        }
+                    </View>
                 </View>
             </HeaderAndScroll>
             <View style={styles.footer}>
@@ -75,12 +100,19 @@ const generateStyles = THEME => StyleSheet.create({
         width: '100%',
         alignItems: 'center',
     },
+    chatWrapper: {
+        flex: 1,
+        width: '100%',
+        paddingHorizontal: 16,
+    },
     footer: {
         width: '100%',
         backgroundColor: colors.BG_COLOR_MODAL[THEME],
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'flex-end',
+        borderTopWidth: 0.5,
+        borderColor: colors.TEXT_COLOR_LIGHT[THEME],
         backgroundColor: colors.BG_COLOR_MODAL[THEME],
     },
     inputWrapper: {

@@ -23,8 +23,7 @@ export default function Space({ route, navigation }) {
                     headerShown: false,
                     tabBarShowLabel: false,
                 })}
-                // initialRouteName='SpacePage'
-                initialRouteName='ChatPage'
+                initialRouteName='SpacePage'
                 backBehavior='initialRoute'
             >
                 <BottomTab.Screen
