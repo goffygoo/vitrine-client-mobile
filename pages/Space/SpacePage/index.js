@@ -1,12 +1,12 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { WebView } from 'react-native-webview';
 import { useSelector } from "react-redux";
 import { activeSpaceDataSelector } from "../../../redux/spacesReducer";
 import { themeSelector } from "../../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../../colors.json';
-import { AntDesign } from '@expo/vector-icons';
 import ImageHeader from "./ImageHeader";
+import HeaderAndScroll from "../components/HeaderAndScroll";
 
 export default function SpacePage({ route, navigation }) {
     const theme = useSelector(themeSelector);
@@ -17,15 +17,9 @@ export default function SpacePage({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Pressable
-                    onPress={() => navigation.openDrawer()}
-                >
-                    <AntDesign name="menufold" size={24} color={colors.TEXT_COLOR_LIGHT[theme]} />
-                </Pressable>
-                <Text style={styles.headerHeading}>{title}</Text>
-            </View>
-            <ScrollView style={styles.scroll}>
+            <HeaderAndScroll
+                navigation={navigation}
+            >
                 <View style={styles.scrollInner}>
                     <ImageHeader />
                     {
@@ -47,7 +41,7 @@ export default function SpacePage({ route, navigation }) {
                         style={styles.webView}
                     />
                 </View>
-            </ScrollView>
+            </HeaderAndScroll>
         </View>
     )
 }
@@ -59,35 +53,11 @@ const generateStyles = THEME => StyleSheet.create({
         width: '100%',
         backgroundColor: colors.BG_COLOR[THEME],
     },
-    scroll: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
-        paddingTop: 48,
-    },
     scrollInner: {
         flex: 1,
         height: '100%',
         width: '100%',
         alignItems: 'center',
-    },
-    header: {
-        position: 'absolute',
-        width: '100%',
-        height: 48,
-        alignItems: 'center',
-        flexDirection: 'row',
-        paddingLeft: 16,
-        backgroundColor: colors.FADE[THEME],
-        borderBottomColor: colors.TEXT_COLOR_ALT[THEME],
-        borderBottomWidth: 1,
-        zIndex: 2,
-    },
-    headerHeading: {
-        marginLeft: 16,
-        fontSize: 20,
-        fontWeight: '600',
-        color: colors.TEXT_COLOR[THEME],
     },
     webView: {
         width: 300,

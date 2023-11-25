@@ -34,7 +34,7 @@ const generateStyles = THEME => StyleSheet.create({
   container: {
     height: 144,
     width: 160,
-    backgroundColor: colors.TEXT_COLOR_LIGHT[THEME],
+    backgroundColor: colors.BG_COLOR_MODAL[THEME],
     borderRadius: 4,
     overflow: 'hidden',
     elevation: 4,
@@ -58,17 +58,17 @@ const generateStyles = THEME => StyleSheet.create({
     marginHorizontal: 8,
   },
   descriptionHeading: {
-    color: colors.BG_COLOR[THEME],
+    color: colors.TEXT_COLOR_LIGHT[THEME],
     fontSize: 12,
     fontWeight: '600',
   },
   descriptionSubheading: {
-    color: colors.BG_COLOR[THEME],
+    color: colors.TEXT_COLOR_LIGHT[THEME],
     fontSize: 12,
     fontWeight: '300',
   },
   descriptionTime: {
-    color: colors.BG_COLOR[THEME],
+    color: colors.TEXT_COLOR_LIGHT[THEME],
     fontSize: 12,
     fontWeight: '600',
   },
