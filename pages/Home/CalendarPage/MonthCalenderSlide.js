@@ -135,7 +135,7 @@ const generateStyles = THEME => StyleSheet.create({
         color: colors.TEXT_COLOR[THEME],
     },
     tableCellTextFade: {
-        color: colors.TEXT_COLOR_LIGHT[THEME],
+        color: colors.INPUT_PLACEHOLDER[THEME],
     },
     tableCellTextToday: {
         color: colors.PRIMARY_COLOR,

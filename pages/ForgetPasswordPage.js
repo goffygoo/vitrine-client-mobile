@@ -72,7 +72,7 @@ const generateStyles = THEME => StyleSheet.create({
     },
     description: {
         textAlign: 'center',
-        color: colors.TEXT_COLOR_LIGHT[THEME],
+        color: colors.INPUT_PLACEHOLDER[THEME],
         marginBottom: 32,
     },
 })

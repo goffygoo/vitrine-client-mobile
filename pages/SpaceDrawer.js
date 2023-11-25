@@ -55,7 +55,6 @@ function DrawerContent({ navigation }) {
     )
 }
 
-
 const generateStyles = THEME => StyleSheet.create({
     scroll: {
         backgroundColor: colors.BG_COLOR_SECONDARY[THEME],
@@ -89,7 +88,7 @@ const generateStyles = THEME => StyleSheet.create({
         paddingHorizontal: 8,
         fontSize: 12,
         fontWeight: '500',
-        color: colors.TEXT_COLOR_LIGHT[THEME],
+        color: colors.INPUT_PLACEHOLDER[THEME],
         textAlign: 'center',
     },
     spaceIconActive: {

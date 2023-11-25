@@ -71,6 +71,6 @@ const generateStyles = THEME => StyleSheet.create({
     eventRowTiming: {
         fontSize: 14,
         fontWeight: '400',
-        color: colors.TEXT_COLOR_LIGHT[THEME],
+        color: colors.INPUT_PLACEHOLDER[THEME],
     },
 })

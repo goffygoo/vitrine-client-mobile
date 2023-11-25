@@ -16,9 +16,9 @@ export default function AboutMePopup({ close }) {
                 <TextInputArea
                     label={"About Me"}
                     value={bio}
+                    numberOfLines={8}
                     onChange={(e) => setBio(e)}
                     placeholder={"Write something about yourself..."}
-                    size={"expand"}
                     type={'light'}
                 />
             </View>
