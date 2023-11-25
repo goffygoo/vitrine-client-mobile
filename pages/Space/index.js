@@ -55,7 +55,7 @@ export default function Space({ route, navigation }) {
                     component={SpacePage}
                     options={{
                         tabBarIcon: (({ focused, color, size }) => {
-                            let iconName = focused ? 'flower' : 'flower-outline';
+                            let iconName = focused ? 'ios-reader' : 'ios-reader-outline';
                             return <Ionicons name={iconName} size={size} color={color} />
                         })
                     }}
