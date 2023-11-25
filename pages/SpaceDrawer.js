@@ -37,12 +37,14 @@ function DrawerContent({ navigation }) {
                                 >
                                     <Pressable
                                         style={styles.spaceIconPressable}
-                                        android_ripple={{color: colors.AND_RIPPLE[theme], foreground: true}}
+                                        android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
                                         onPress={() => handlePress(space.id)}
                                     >
                                     </Pressable>
                                 </ImageBackground>
-                                <Text style={styles.spaceIconTitle}>{space.title}</Text>
+                                <Text
+                                    style={[styles.spaceIconTitle, space.id === activeSpace ? styles.spaceIconTitleActive : {}]}
+                                >{space.title}</Text>
                                 <View style={space.id === activeSpace ? styles.spaceIconArtifact : {}} />
                             </View>
                         )
@@ -87,12 +89,14 @@ const generateStyles = THEME => StyleSheet.create({
         paddingHorizontal: 8,
         fontSize: 12,
         fontWeight: '500',
-        color: colors.TEXT_COLOR[THEME],
+        color: colors.TEXT_COLOR_LIGHT[THEME],
         textAlign: 'center',
     },
     spaceIconActive: {
-        backgroundColor: colors.PRIMARY_COLOR,
         borderColor: colors.PRIMARY_COLOR,
+    },
+    spaceIconTitleActive: {
+        color: colors.TEXT_COLOR[THEME],
     },
     spaceIconArtifact: {
         position: 'absolute',
