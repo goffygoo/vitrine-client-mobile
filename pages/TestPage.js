@@ -13,6 +13,7 @@ export default function TestPage({ route, navigation }) {
             <Text>{theme} THEME</Text>
             <View style={{ height: '50%', justifyContent: 'space-evenly' }}>
                 <Button text={"Home"} onPress={() => navigation.navigate('Home')} />
+                <Button text={"Community"} onPress={() => navigation.navigate('Community')} />
                 <Button text={"Login Page"} onPress={() => navigation.navigate('LoginPage')} />
                 <Button text={"Forget pass"} onPress={() => navigation.navigate('ForgetPasswordPage')} />
                 <Button text={"Reset pass"} onPress={() => navigation.navigate('ResetPasswordPage')} />

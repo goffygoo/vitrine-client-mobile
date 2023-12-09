@@ -29,7 +29,7 @@ export default function ForgetPasswordPage({ route, navigation }) {
                     type={'light'}
                     size={'expand'}
                 />
-                <Divider size={'m'} />
+                <Divider size={'l'} />
                 <PrimaryButton
                     text={'Send Reset Link'}
                     onPress={() => undefined}

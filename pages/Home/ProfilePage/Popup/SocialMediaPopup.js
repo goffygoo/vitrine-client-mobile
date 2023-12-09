@@ -2,6 +2,7 @@ import { useState } from "react";
 import Popup from "./Popup";
 import TextInputBox from "../../../../components/widgets/input/TextInputBox";
 import { StyleSheet, View } from "react-native";
+import Divider from "../../../../components/widgets/Divider";
 
 export default function SocialMediaPopup({ close }) {
     const [linkedin, setLinkedin] = useState('');
@@ -15,6 +16,7 @@ export default function SocialMediaPopup({ close }) {
             onSubmit={() => undefined}
         >
             <View style={styles.popupContent}>
+                <Divider size={'m'} />
                 <TextInputBox
                     label={"LinkedIn"}
                     value={linkedin}
@@ -23,6 +25,7 @@ export default function SocialMediaPopup({ close }) {
                     size={"expand"}
                     type={'light'}
                 />
+                <Divider size={'m'} />
                 <TextInputBox
                     label={"Instagram"}
                     value={instagram}
@@ -31,6 +34,7 @@ export default function SocialMediaPopup({ close }) {
                     size={"expand"}
                     type={'light'}
                 />
+                <Divider size={'m'} />
                 <TextInputBox
                     label={"Twitter"}
                     value={twitter}
@@ -39,6 +43,7 @@ export default function SocialMediaPopup({ close }) {
                     size={"expand"}
                     type={'light'}
                 />
+                <Divider size={'m'} />
             </View>
         </Popup>
     )

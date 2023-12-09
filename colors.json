@@ -51,11 +51,11 @@
         "LIGHT": "#EFEFEF"
     },
     "INPUT_BG_COLOR": {
-        "DARK": "#868B90",
+        "DARK": "#212B36",
         "LIGHT": "#ECEFF2"
     },
     "INPUT_TEXT_COLOR": {
-        "DARK": "#1A1D1F",
+        "DARK": "#8E97A0",
         "LIGHT": "#272B30"
     },
     "INPUT_TEXT_COLOR_LIGHT": {

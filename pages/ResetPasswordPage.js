@@ -31,6 +31,7 @@ export default function ResetPasswordPage({ route, navigation }) {
                     size={'expand'}
                     secureTextEntry
                 />
+                <Divider size={'m'} />
                 <TextInputBox
                     value={confirmPassword}
                     onChange={e => setConfirmPassword(e)}
@@ -39,7 +40,7 @@ export default function ResetPasswordPage({ route, navigation }) {
                     size={'expand'}
                     secureTextEntry
                 />
-                <Divider size={'m'} />
+                <Divider size={'l'} />
                 <PrimaryButton
                     text={'Reset Password'}
                     onPress={() => undefined}

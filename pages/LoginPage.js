@@ -6,6 +6,7 @@ import GoogleLogin from "../components/widgets/GoogleLogin";
 import { useMemo, useState } from "react";
 import TextInputBox from "../components/widgets/input/TextInputBox";
 import { AntDesign } from "@expo/vector-icons";
+import Divider from "../components/widgets/Divider";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
 const windowHeight = Dimensions.get('window').height;
@@ -13,7 +14,7 @@ const windowHeight = Dimensions.get('window').height;
 export default function LoginPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
-    
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -22,8 +23,11 @@ export default function LoginPage({ route, navigation }) {
             <View style={styles.overlay} >
                 <GoogleLogin size={'expand'} />
                 <View style={styles.inputColumn}>
+                    <Divider size={'m'} />
                     <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} size={'expand'} />
+                    <Divider size={'m'} />
                     <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} size={'expand'} secureTextEntry />
+                    <Divider size={'m'} />
                 </View>
                 <View style={styles.actionRow}>
                     <Text style={styles.primaryText}>Login</Text>
