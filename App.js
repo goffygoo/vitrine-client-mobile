@@ -14,6 +14,8 @@ import { Provider, useSelector } from 'react-redux'
 import { themeSelector } from './redux/settingReducer';
 import colors from './colors.json'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { useEffect } from 'react'
+import messaging from '@react-native-firebase/messaging';
 
 // dev env only
 console.warn = () => undefined;
@@ -52,7 +54,32 @@ const styles = StyleSheet.create({
   },
 })
 
+const saveTokenToDatabase = (token) => {
+  console.log("New Token ", token)
+}
+
 export default function Wrapper() {
+  useEffect(() => {
+    messaging()
+      .getToken()
+      .then(token => {
+        return saveTokenToDatabase(token);
+      });
+
+    return messaging().onTokenRefresh(token => {
+      saveTokenToDatabase(token);
+    });
+  }, []);
+
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
