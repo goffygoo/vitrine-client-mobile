@@ -2,6 +2,7 @@ import { useState } from "react";
 import Popup from "./Popup";
 import TextInputBox from "../../../../components/widgets/input/TextInputBox";
 import { StyleSheet, View } from "react-native";
+import Divider from "../../../../components/widgets/Divider";
 
 export default function UserProfilePopup({ close }) {
     const [name, setName] = useState('');
@@ -14,6 +15,7 @@ export default function UserProfilePopup({ close }) {
             onSubmit={() => undefined}
         >
             <View style={styles.popupContent}>
+                <Divider size={'m'} />
                 <TextInputBox
                     label={"Name"}
                     value={name}
@@ -22,6 +24,7 @@ export default function UserProfilePopup({ close }) {
                     size={"expand"}
                     type={'light'}
                 />
+                <Divider size={'m'} />
                 <TextInputBox
                     label={"Name"}
                     value={nameNew}
@@ -30,6 +33,7 @@ export default function UserProfilePopup({ close }) {
                     size={"expand"}
                     type={'light'}
                 />
+                <Divider size={'m'} />
             </View>
         </Popup>
     )

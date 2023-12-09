@@ -4,17 +4,18 @@ import { useSelector } from "react-redux";
 import { themeSelector } from "../../../redux/settingReducer";
 import colors from '../../../colors.json';
 
-export default function TextInputBox({ label, placeholder, value, onChange, secureTextEntry, type, size }) {
+export default function TextInputBox({
+    label, placeholder, value, onChange, secureTextEntry, type,
+    fontWeight = '400',
+    width = '100%',
+    fontSize = 20,
+}) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
-    const width = useMemo(() => {
-        return {
-            "expand": '100%'
-        }[size];
-    }, [size]);
     const changeBackground = useMemo(() => {
         return {
-            'light': { backgroundColor: colors.BG_COLOR[theme], color: colors.TEXT_COLOR[theme] }
+            'light': { backgroundColor: colors.BG_COLOR[theme], color: colors.TEXT_COLOR_LIGHT[theme] },
+            'alt': { backgroundColor: colors.BG_COLOR_MODAL[theme], color: colors.TEXT_COLOR[theme] },
         }[type];
     }, [type, theme]);
 
@@ -25,8 +26,14 @@ export default function TextInputBox({ label, placeholder, value, onChange, secu
                 value={value}
                 secureTextEntry={secureTextEntry}
                 placeholder={placeholder}
-                placeholderTextColor={colors.INPUT_TEXT_COLOR_LIGHT[theme]}
-                style={[styles.input, { ...(changeBackground) }]}
+                placeholderTextColor={colors.INPUT_PLACEHOLDER[theme]}
+                style={[
+                    styles.input,
+                    {
+                        fontWeight,
+                        fontSize,
+                        width
+                    }, { ...(changeBackground) }]}
                 onChangeText={onChange}
             />
         </View>
@@ -38,7 +45,6 @@ const generateStyles = THEME => StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        marginVertical: 8,
     },
     input: {
         fontSize: 20,
@@ -47,7 +53,6 @@ const generateStyles = THEME => StyleSheet.create({
         width: '100%',
         backgroundColor: colors.INPUT_BG_COLOR[THEME],
         color: colors.INPUT_TEXT_COLOR[THEME],
-        fontWeight: '600',
         borderRadius: 4,
     },
     label: {

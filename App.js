@@ -9,6 +9,9 @@ import ForgetPasswordPage from './pages/ForgetPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import Home from './pages/Home'
 import SpaceDrawer from './pages/SpaceDrawer'
+import Community from './pages/Community'
+import SpacePreview from './pages/SpacePreview'
+import Checkout from './pages/Checkout'
 import store from './redux/store'
 import { Provider, useSelector } from 'react-redux'
 import { themeSelector } from './redux/settingReducer';
@@ -32,6 +35,7 @@ function App() {
       <SafeAreaView style={styles.container}>
         <NavigationContainer style={styles.container}>
           <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
+            <Stack.Screen name="Community" component={Community} />
             <Stack.Screen name="TestPage" component={TestPage} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="LoginPage" component={LoginPage} />
@@ -39,6 +43,8 @@ function App() {
             <Stack.Screen name="ForgetPasswordPage" component={ForgetPasswordPage} />
             <Stack.Screen name="ResetPasswordPage" component={ResetPasswordPage} />
             <Stack.Screen name="Space" component={SpaceDrawer} />
+            <Stack.Screen name="SpacePreview" component={SpacePreview} />
+            <Stack.Screen name="Checkout" component={Checkout} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
@@ -55,7 +61,7 @@ const styles = StyleSheet.create({
 })
 
 const saveTokenToDatabase = (token) => {
-  console.log("New Token ", token)
+  // console.log("New Token ", token)
 }
 
 export default function Wrapper() {

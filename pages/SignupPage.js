@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import TextInputBox from "../components/widgets/input/TextInputBox";
 import Select from "../components/widgets/input/Select";
+import Divider from "../components/widgets/Divider";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
 const windowHeight = Dimensions.get('window').height;
@@ -25,9 +26,13 @@ export default function SignupPage({ route, navigation }) {
             <View style={styles.overlay}>
                 <GoogleLogin size={'expand'} />
                 <View style={styles.inputColumn}>
+                    <Divider size={'m'} />
                     <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} size={'expand'} />
+                    <Divider size={'m'} />
                     <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} size={'expand'} secureTextEntry />
+                    <Divider size={'m'} />
                     <TextInputBox label={"Confirm Password"} value={confirmPassword} placeholder={'Confirm your password'} onChange={e => setConfirmPassword(e)} size={'expand'} secureTextEntry />
+                    <Divider size={'m'} />
                     <Select label={"User Type"} value={select} placeholder={"Placeholder"} items={[
                         { label: 'Consumer', value: 'Consumer' },
                         { label: 'Provider', value: 'Provider' },
