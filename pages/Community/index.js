@@ -45,7 +45,9 @@ export default function Community({ route, navigation }) {
                             return (
                                 <>
                                     <Divider size={'m'} />
-                                    <SpaceCard />
+                                    <SpaceCard
+                                        navigation={navigation}
+                                    />
                                     <Divider size={'m'} />
                                 </>
                             )
