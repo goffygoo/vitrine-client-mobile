@@ -4,7 +4,7 @@ import { themeSelector } from "../../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../../colors.json';
 
-export default function PrimaryButton({ text, onClick, height = 48, width, fontSize = 24 }) {
+export default function PrimaryButton({ text, onClick, height = 48, width, fontSize = 24, fontWeight = '600' }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
@@ -15,7 +15,7 @@ export default function PrimaryButton({ text, onClick, height = 48, width, fontS
                 android_ripple={{ color: colors.PRIMARY_COLOR_LIGHT }}
                 onPress={onClick}
             >
-                <Text style={[styles.text, {fontSize}]}>{text}</Text>
+                <Text style={[styles.text, {fontSize, fontWeight}]}>{text}</Text>
             </Pressable>
         </View>
     )
@@ -35,8 +35,6 @@ const generateStyles = THEME => StyleSheet.create({
         justifyContent: 'center',
     },
     text: {
-        fontSize: 24,
-        fontWeight: '600',
         color: colors.BG_COLOR[THEME],
     },
 })

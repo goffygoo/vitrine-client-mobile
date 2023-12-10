@@ -64,7 +64,7 @@ const generateStyles = THEME => StyleSheet.create({
         width: 100,
         borderRadius: 100,
         marginTop: -50,
-        borderColor: colors.SHADE_1,
+        borderColor: colors.FADE[THEME],
         borderWidth: 2,
         overflow: 'hidden',
     },

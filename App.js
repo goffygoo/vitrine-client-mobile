@@ -35,7 +35,6 @@ function App() {
       <SafeAreaView style={styles.container}>
         <NavigationContainer style={styles.container}>
           <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-            <Stack.Screen name="Community" component={Community} />
             <Stack.Screen name="TestPage" component={TestPage} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="LoginPage" component={LoginPage} />
@@ -43,6 +42,7 @@ function App() {
             <Stack.Screen name="ForgetPasswordPage" component={ForgetPasswordPage} />
             <Stack.Screen name="ResetPasswordPage" component={ResetPasswordPage} />
             <Stack.Screen name="Space" component={SpaceDrawer} />
+            <Stack.Screen name="Community" component={Community} />
             <Stack.Screen name="SpacePreview" component={SpacePreview} />
             <Stack.Screen name="Checkout" component={Checkout} />
           </Stack.Navigator>

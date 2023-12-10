@@ -1,16 +1,20 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../colors.json';
 import { Entypo } from '@expo/vector-icons';
 
-export default function SpaceCard() {
+export default function SpaceCard({ navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     return (
-        <View style={styles.container}>
+        <Pressable
+            style={styles.container}
+            onPress={() => navigation.navigate("SpacePreview")}
+            android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
+        >
             <View style={styles.main}>
                 <Image
                     style={styles.image}
@@ -52,7 +56,7 @@ export default function SpaceCard() {
                     <Text style={styles.footerTextValue}>  FREE</Text>
                 </Text>
             </View>
-        </View>
+        </Pressable>
     )
 }
 
