@@ -46,19 +46,19 @@ export default function OneOnOnePopup({ close }) {
                     type={'light'}
                 />
                 <View style={styles.checkBoxRow}>
-                    <CheckBox checked={days[0]} onChange={val => daysStateChange(0)(val)} text={"Saturday"} />
-                    <CheckBox checked={days[1]} onChange={val => daysStateChange(1)(val)} text={"Sunday"} />
+                    <CheckBox checked={days[0]} onChange={val => daysStateChange(0)(val)} text={"Saturday"} width={112} />
+                    <CheckBox checked={days[1]} onChange={val => daysStateChange(1)(val)} text={"Sunday"} width={112} />
                 </View>
                 <View style={styles.checkBoxRow}>
-                    <CheckBox checked={days[2]} onChange={val => daysStateChange(2)(val)} text={"Monday"} />
-                    <CheckBox checked={days[3]} onChange={val => daysStateChange(3)(val)} text={"Tuesday"} />
+                    <CheckBox checked={days[2]} onChange={val => daysStateChange(2)(val)} text={"Monday"} width={112} />
+                    <CheckBox checked={days[3]} onChange={val => daysStateChange(3)(val)} text={"Tuesday"} width={112} />
                 </View>
                 <View style={styles.checkBoxRow}>
-                    <CheckBox checked={days[4]} onChange={val => daysStateChange(4)(val)} text={"Wednesday"} />
-                    <CheckBox checked={days[5]} onChange={val => daysStateChange(5)(val)} text={"Thursday"} />
+                    <CheckBox checked={days[4]} onChange={val => daysStateChange(4)(val)} text={"Wednesday"} width={112} />
+                    <CheckBox checked={days[5]} onChange={val => daysStateChange(5)(val)} text={"Thursday"} width={112} />
                 </View>
                 <View style={styles.checkBoxRow}>
-                    <CheckBox checked={days[6]} onChange={val => daysStateChange(6)(val)} text={"Friday"} />
+                    <CheckBox checked={days[6]} onChange={val => daysStateChange(6)(val)} text={"Friday"} width={112} />
                 </View>
             </View>
         </Popup>

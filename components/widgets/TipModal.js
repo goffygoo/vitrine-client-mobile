@@ -45,6 +45,6 @@ const generateStyles = THEME => StyleSheet.create({
         color: colors.TEXT_COLOR[THEME],
         fontSize: 24,
         fontWeight: '300',
-        paddingHorizontal: 16,
+        padding: 16,
     }
 })

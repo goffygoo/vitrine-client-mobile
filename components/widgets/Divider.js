@@ -1,21 +1,28 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
-export default function Divider({ size }) {
-    const height = {
+export default function Divider({ size, orientation = "h" }) {
+    const gap = {
         "s": 4,
         "m": 8,
         "l": 16,
         "xl": 32,
-    }[size];
+    }[size] ?? 2;
+
+    const horizontal = {
+        height: gap,
+        width: '100%',
+    }
+
+    const vertical = {
+        height: '100%',
+        width: gap,
+    }
+
+    const style = {
+        ["v"]: vertical
+    }[orientation] ?? horizontal
 
     return (
-        <View style={[styles.container, {...(height && {height})}]}></View>
+        <View style={style}></View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        height: 2,
-        width: '100%',
-    },
-})

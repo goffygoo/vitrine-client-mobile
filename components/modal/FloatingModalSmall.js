@@ -37,7 +37,6 @@ const generateStyles = THEME => StyleSheet.create({
     },
     modal: {
         position: 'absolute',
-        height: 256,
         width: 216,
         marginTop: windowHeight/2 - 128,
         marginLeft: windowWidth/2 - 108,
