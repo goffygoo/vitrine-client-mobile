@@ -4,13 +4,13 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import colors from '../../../colors.json';
 
-export default function CheckBox({ checked, onChange, text }) {
+export default function CheckBox({ checked, onChange, text, width = "100%" }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
     const imageSource = theme === 'DARK' ? require('../../../assets/TickDark.png') : require('../../../assets/TickLight.png');
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { width }]}>
             <Pressable
                 style={styles.pressableContainer}
                 onPress={() => onChange(!checked)}
@@ -41,12 +41,10 @@ const generateStyles = THEME => StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: 112,
     },
     pressableContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: 112,
         padding: 4,
     },
     checkbox: {
@@ -61,11 +59,12 @@ const generateStyles = THEME => StyleSheet.create({
         width: 24,
         alignItems: 'center',
         justifyContent: 'center',
+        borderRadius: 4,
         borderWidth: 2,
-        borderColor: colors.ACCENT_1,
+        borderColor: colors.PRIMARY_COLOR,
     },
     pressableChecked: {
-        backgroundColor: colors.ACCENT_1,
+        backgroundColor: colors.PRIMARY_COLOR,
     },
     image: {
         height: 14,
