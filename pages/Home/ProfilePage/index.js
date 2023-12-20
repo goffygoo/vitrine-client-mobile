@@ -1,6 +1,6 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
-import { themeSelector } from '../../../redux/settingReducer';
+import { useDispatch, useSelector } from "react-redux";
+import { themeSelector, toggleTheme } from '../../../redux/settingReducer';
 import { useMemo, useState } from "react";
 import colors from '../../../colors.json';
 import SectionBlock from "./SectionBlock";
@@ -12,11 +12,40 @@ import UserProfilePopup from "./Popup/UserProfilePopup";
 import SocialMediaPopup from "./Popup/SocialMediaPopup";
 import AboutMePopup from "./Popup/AboutMePopup";
 import OneOnOnePopup from "./Popup/OneOnOnePopup";
+import ToggleSwitch from "../../../components/widgets/input/ToggleSwitch";
+import { resetAuthData } from "../../../redux/authReducer";
+import { removeItem, removeSecureItem } from "../../../util/storage";
+import { SECURE_STORAGE_KEY, STORAGE_KEY } from "../../../constants";
 
 export default function ProfilePage({ route, navigation }) {
     const theme = useSelector(themeSelector)
     const styles = useMemo(() => generateStyles(theme), [theme]);
     const [showPoupup, setShowPopup] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const toggle = () => {
+        dispatch(toggleTheme());
+    }
+
+    const handleLogout = async () => {
+        try {
+            dispatch(resetAuthData());
+            await removeSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN);
+            await removeItem(STORAGE_KEY.DATA_TOKEN);
+            await removeSecureItem(SECURE_STORAGE_KEY.REFRESH_TOKEN);
+            await removeItem(STORAGE_KEY.USER_ID);
+            await removeItem(STORAGE_KEY.PROFILE_ID);
+            await removeItem(STORAGE_KEY.TYPE);
+            await removeItem(STORAGE_KEY.EMAIL);
+        } catch (e) {}
+        navigation.reset({
+            index: 0,
+            routes: [
+                { name: 'LoginPage' },
+            ],
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -122,6 +151,20 @@ export default function ProfilePage({ route, navigation }) {
                                 </View>
                             </View>
                         </SectionBlock>
+
+                        <SectionBlock
+                            title="Preferences"
+                        >
+                            <View style={styles.sectionBlock}>
+                                <View style={styles.preferenceRow}>
+                                    <Text style={styles.themeText}>Dark Theme</Text>
+                                    <ToggleSwitch
+                                        onValueChange={toggle}
+                                        value={theme === 'DARK'}
+                                    />
+                                </View>
+                            </View>
+                        </SectionBlock>
                     </View>
                 </View>
                 <View style={styles.buttonRow}>
@@ -132,7 +175,7 @@ export default function ProfilePage({ route, navigation }) {
                         height={40}
                     />
                     <WarnButton
-                        onClick={() => undefined}
+                        onClick={handleLogout}
                         text={"Logout"}
                         fontSize={16}
                         height={40}
@@ -220,4 +263,16 @@ const generateStyles = THEME => StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    preferenceRow: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    themeText: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: colors.TEXT_COLOR[THEME],
+        padding: 16,
+    }
 })

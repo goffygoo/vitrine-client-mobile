@@ -6,8 +6,10 @@ import GoogleLogin from "../components/widgets/GoogleLogin";
 import { useMemo, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import TextInputBox from "../components/widgets/input/TextInputBox";
-import Select from "../components/widgets/input/Select";
 import Divider from "../components/widgets/Divider";
+import { auth_request } from "../util/service";
+import { showToast } from "../components/widgets/Toast";
+import { USER_TYPES } from "../constants";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
 const windowHeight = Dimensions.get('window').height;
@@ -19,7 +21,28 @@ export default function SignupPage({ route, navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [select, setSelect] = useState('');
+
+
+    const handleSignup = () => {
+        if (password !== confirmPassword) {
+            return showToast("Passwords didn't match !")
+        }
+        auth_request(
+            'post',
+            '/api/auth/user/signup',
+            {
+                email,
+                password,
+                type: USER_TYPES.CONSUMER
+            },
+            ({ data }) => {
+                showToast("Please check your email")
+            },
+            () => {
+                showToast("Something went wrong !")
+            }
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -33,13 +56,6 @@ export default function SignupPage({ route, navigation }) {
                     <Divider size={'m'} />
                     <TextInputBox label={"Confirm Password"} value={confirmPassword} placeholder={'Confirm your password'} onChange={e => setConfirmPassword(e)} size={'expand'} secureTextEntry />
                     <Divider size={'m'} />
-                    <Select label={"User Type"} value={select} placeholder={"Placeholder"} items={[
-                        { label: 'Consumer', value: 'Consumer' },
-                        { label: 'Provider', value: 'Provider' },
-                    ]}
-                        onChange={value => setSelect(value)}
-                        size={'expand'}
-                    />
                 </View>
                 <View style={styles.actionRow}>
                     <Text style={styles.primaryText}>Sign Up</Text>
@@ -47,6 +63,7 @@ export default function SignupPage({ route, navigation }) {
                         <Pressable
                             style={styles.primaryButtonInner}
                             android_ripple={{ color: colors.PRIMARY_COLOR_LIGHT }}
+                            onPress={handleSignup}
                         >
                             <AntDesign name="arrowright" size={40} color={colors.BG_COLOR[theme]} />
                         </Pressable>
@@ -79,7 +96,7 @@ const generateStyles = THEME => StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: windowHeight * 0.1,
+        paddingTop: windowHeight * 0.2,
         paddingHorizontal: '15%',
         borderBottomEndRadius: 200,
         zIndex: 2,
@@ -88,7 +105,6 @@ const generateStyles = THEME => StyleSheet.create({
     },
     inputColumn: {
         width: '100%',
-        alignItems: 'center',
         marginVertical: 16,
     },
     buttonContainer: {
