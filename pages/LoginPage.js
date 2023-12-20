@@ -1,5 +1,5 @@
 import { Dimensions, NativeModules, Pressable, StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { themeSelector } from "../redux/settingReducer";
 import colors from './../colors.json';
 import GoogleLogin from "../components/widgets/GoogleLogin";
@@ -7,6 +7,19 @@ import { useMemo, useState } from "react";
 import TextInputBox from "../components/widgets/input/TextInputBox";
 import { AntDesign } from "@expo/vector-icons";
 import Divider from "../components/widgets/Divider";
+import { auth_request } from "../util/service";
+import { showToast } from "../components/widgets/Toast";
+import { DEVICE, SECURE_STORAGE_KEY, STORAGE_KEY } from "../constants";
+import { setItem, setSecureItem } from "../util/storage";
+import {
+    setAccessToken,
+    setDataToken,
+    setEmail,
+    setProfileId,
+    setRefreshToken,
+    setType,
+    setUserId,
+} from "../redux/authReducer";
 
 const { StatusBarManager: { HEIGHT: statusBarHeight } } = NativeModules;
 const windowHeight = Dimensions.get('window').height;
@@ -15,8 +28,72 @@ export default function LoginPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
-    const [email, setEmail] = useState('');
+    const [email, setEmailState] = useState('');
     const [password, setPassword] = useState('');
+
+    const dispatch = useDispatch();
+
+    const handleLogin = () => {
+        auth_request(
+            'post',
+            '/api/auth/user/login',
+            {
+                email,
+                password,
+                device: DEVICE.ANDROID,
+            },
+            async ({ data }) => {
+                const {
+                    userId,
+                    accessToken,
+                    dataToken,
+                    profileId,
+                    refreshToken,
+                    type,
+                    email
+                } = data;
+                try {
+                    if (accessToken) {
+                        await setSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN, accessToken);
+                        dispatch(setAccessToken(accessToken));
+                    };
+                    if (dataToken) {
+                        await setItem(STORAGE_KEY.DATA_TOKEN, dataToken);
+                        dispatch(setDataToken(dataToken));
+                    };
+                    if (refreshToken) {
+                        await setSecureItem(SECURE_STORAGE_KEY.REFRESH_TOKEN, refreshToken);
+                        dispatch(setRefreshToken(refreshToken));
+                    };
+                    if (userId) {
+                        await setItem(STORAGE_KEY.USER_ID, userId);
+                        dispatch(setUserId(userId));
+                    };
+                    if (profileId) {
+                        await setItem(STORAGE_KEY.PROFILE_ID, profileId);
+                        dispatch(setProfileId(profileId));
+                    };
+                    if (type) {
+                        await setItem(STORAGE_KEY.TYPE, type);
+                        dispatch(setType(type));
+                    };
+                    if (email) {
+                        await setItem(STORAGE_KEY.EMAIL, email);
+                        dispatch(setEmail(email));
+                    };
+                } catch (e) { }
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        { name: 'Home' },
+                    ],
+                });
+            },
+            () => {
+                showToast("Invalid Credentials")
+            }
+        )
+    }
 
     return (
         <View style={styles.container} >
@@ -24,7 +101,7 @@ export default function LoginPage({ route, navigation }) {
                 <GoogleLogin size={'expand'} />
                 <View style={styles.inputColumn}>
                     <Divider size={'m'} />
-                    <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmail(e)} size={'expand'} />
+                    <TextInputBox label={"Email"} value={email} placeholder={'Email goes here'} onChange={e => setEmailState(e)} size={'expand'} />
                     <Divider size={'m'} />
                     <TextInputBox label={"Password"} value={password} placeholder={'Enter your password'} onChange={e => setPassword(e)} size={'expand'} secureTextEntry />
                     <Divider size={'m'} />
@@ -35,6 +112,7 @@ export default function LoginPage({ route, navigation }) {
                         <Pressable
                             style={styles.primaryButtonInner}
                             android_ripple={{ color: colors.PRIMARY_COLOR_LIGHT }}
+                            onPress={handleLogin}
                         >
                             <AntDesign name="arrowright" size={40} color={colors.BG_COLOR[theme]} />
                         </Pressable>
