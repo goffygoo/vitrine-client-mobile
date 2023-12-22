@@ -13,6 +13,7 @@ export const STORAGE_KEY = {
     DATA_TOKEN: 'DATA_TOKEN',
     TYPE: 'TYPE',
     EMAIL: 'EMAIL',
+    FCM_TOKEN: 'FCM_TOKEN',
 }
 
 export const SECURE_STORAGE_KEY = {

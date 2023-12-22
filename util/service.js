@@ -29,14 +29,14 @@ const getUpdatedRoute = (route, body) => {
 };
 
 const refresh_access_token = async (navigation) => {
-    const refreshToken = getSecureItem(SECURE_STORAGE_KEY.REFRESH_TOKEN);
-    const userId = getItem(STORAGE_KEY.USER_ID);
+    const refreshToken = await getSecureItem(SECURE_STORAGE_KEY.REFRESH_TOKEN);
+    const userId = await getItem(STORAGE_KEY.USER_ID);
     try {
         const data = await axios.post(`${SERVER}/api/auth/access/newAccessToken`, {
             userId,
             refreshToken,
         });
-        setSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN, data.data.accessToken)
+        await setSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN, data.data.accessToken)
         return true;
     } catch {
         navigation.navigate("LoginPage");
@@ -49,7 +49,7 @@ export const auth_request_with_access_token = async (
     onSuccess,
     onError
 ) => {
-    const token = getSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN);
+    const token = await getSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN);
     const config = {
         headers: {
             Authorization: token,
@@ -88,7 +88,7 @@ export const auth_request = async (method, route, body, onSuccess, onError) => {
 export const resource_request_with_access_token =
     (navigation) =>
         async (method, route, body, onSuccess, onError, level = 0) => {
-            const token = getSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN);
+            const token = await getSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN);
             const config = {
                 headers: {
                     Authorization: token,

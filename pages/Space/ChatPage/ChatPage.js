@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../../redux/settingReducer";
 import { useMemo, useState } from "react";

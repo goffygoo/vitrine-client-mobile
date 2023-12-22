@@ -21,6 +21,8 @@ import { useEffect } from 'react'
 import messaging from '@react-native-firebase/messaging';
 import { ServiceContext } from './util/context/serviceContext'
 import { resource_request_with_access_token } from './util/service'
+import { setItem } from './util/storage'
+import { STORAGE_KEY } from './constants'
 
 // dev env only
 console.warn = () => undefined;
@@ -64,10 +66,6 @@ const styles = StyleSheet.create({
   },
 })
 
-const saveTokenToDatabase = (token) => {
-  // console.log("New Token ", token)
-}
-
 function NavigatorWrapper() {
   const theme = useSelector(themeSelector);
 
@@ -83,16 +81,20 @@ function NavigatorWrapper() {
   )
 }
 
+const saveTokenToStorage = async (token) => {
+  await setItem(STORAGE_KEY.FCM_TOKEN, token);
+}
+
 export default function Wrapper() {
   useEffect(() => {
     messaging()
       .getToken()
       .then(token => {
-        return saveTokenToDatabase(token);
+        return saveTokenToStorage(token);
       });
 
     return messaging().onTokenRefresh(token => {
-      saveTokenToDatabase(token);
+      saveTokenToStorage(token);
     });
   }, []);
 

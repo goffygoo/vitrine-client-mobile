@@ -14,6 +14,7 @@ import {
     setUserId,
 } from "../redux/authReducer";
 import { SECURE_STORAGE_KEY, STORAGE_KEY } from "../constants";
+import { auth_request_with_access_token } from "../util/service";
 
 let loading = true;
 let redirectInstantly = false;
@@ -35,7 +36,17 @@ export default function BrandPage({ route, navigation }) {
             const type = await getItem(STORAGE_KEY.TYPE);
             const email = await getItem(STORAGE_KEY.EMAIL);
 
-            if (accessToken) isLoggedIn = true;
+            if (accessToken) {
+                isLoggedIn = true;
+                const fcmToken = await getItem(STORAGE_KEY.FCM_TOKEN);
+                auth_request_with_access_token(
+                    "post",
+                    "/api/integration/app/init",
+                    { fcmToken },
+                    () => undefined,
+                    () => undefined
+                )
+            }
 
             if (accessToken) dispatch(setAccessToken(accessToken));
             if (dataToken) dispatch(setDataToken(dataToken));
