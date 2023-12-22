@@ -10,7 +10,7 @@ import Divider from "../components/widgets/Divider";
 import { auth_request } from "../util/service";
 import { showToast } from "../components/widgets/Toast";
 import { DEVICE, SECURE_STORAGE_KEY, STORAGE_KEY } from "../constants";
-import { setItem, setSecureItem } from "../util/storage";
+import { getItem, setItem, setSecureItem } from "../util/storage";
 import {
     setAccessToken,
     setDataToken,
@@ -33,7 +33,8 @@ export default function LoginPage({ route, navigation }) {
 
     const dispatch = useDispatch();
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+        const fcmToken = await getItem(STORAGE_KEY.FCM_TOKEN);
         auth_request(
             'post',
             '/api/auth/user/login',
@@ -41,6 +42,7 @@ export default function LoginPage({ route, navigation }) {
                 email,
                 password,
                 device: DEVICE.ANDROID,
+                fcmToken
             },
             async ({ data }) => {
                 const {

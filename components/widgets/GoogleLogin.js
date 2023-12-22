@@ -17,7 +17,7 @@ import {
     setType,
     setUserId,
 } from '../../redux/authReducer';
-import { setItem, setSecureItem } from '../../util/storage';
+import { getItem, setItem, setSecureItem } from '../../util/storage';
 
 GoogleSignin.configure({
     webClientId: '719286156722-bs49veig3nkf65n7eel8jalb1j10taue.apps.googleusercontent.com',
@@ -46,12 +46,14 @@ export default function GoogleLogin({ size }) {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             const code = userInfo.serverAuthCode;
+            const fcmToken = await getItem(STORAGE_KEY.FCM_TOKEN);
             auth_request(
                 'post',
                 '/api/auth/user/googleLogin',
                 {
                     code,
                     device: DEVICE.ANDROID,
+                    fcmToken
                 },
                 async ({ data }) => {
                     const {
