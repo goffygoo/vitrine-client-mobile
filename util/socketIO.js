@@ -1,8 +1,11 @@
 import io from "socket.io-client";
 import config from '../config.json';
+import { SECURE_STORAGE_KEY, SOCKET_EVENTS, STORAGE_KEY } from "../constants";
+import { auth_request } from "./service";
+import { getItem, getSecureItem, setSecureItem } from "./storage";
+import { setAccessToken } from "../redux/authReducer";
 
 const { SERVER } = config;
-const SOCKET_TOKEN = "SOCKET_TOKEN";
 
 let socket;
 
@@ -10,13 +13,29 @@ const listenAllEvents = (dispatch) => {
 };
 
 export const initConnection = (dispatch, props) => {
-  const { profileId, type } = props;
+  const { accessToken } = props;
   socket = io(SERVER, {
     auth: {
-      token: SOCKET_TOKEN,
-      profileId,
-      type,
+      accessToken,
     },
+  });
+
+  socket.on(SOCKET_EVENTS.CONNECTION_ERROR, async (_e) => {
+    const refreshToken = await getSecureItem(SECURE_STORAGE_KEY.REFRESH_TOKEN);
+    const userId = await getItem(STORAGE_KEY.USER_ID);
+    auth_request(
+      'post',
+      '/api/auth/access/newAccessToken',
+      {
+        refreshToken,
+        userId
+      },
+      async ({ data }) => {
+        await setSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN, data.accessToken);
+        dispatch(setAccessToken(data.accessToken));
+      },
+      () => undefined,
+    )
   });
 
   listenAllEvents(dispatch);

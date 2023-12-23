@@ -13,7 +13,7 @@ import Community from './pages/Community'
 import SpacePreview from './pages/SpacePreview'
 import Checkout from './pages/Checkout'
 import store from './redux/store'
-import { Provider, useSelector } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import { themeSelector } from './redux/settingReducer';
 import colors from './colors.json'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -23,6 +23,8 @@ import { ServiceContext } from './util/context/serviceContext'
 import { resource_request_with_access_token } from './util/service'
 import { setItem } from './util/storage'
 import { STORAGE_KEY } from './constants'
+import { accessTokenSelector } from './redux/authReducer'
+import { initConnection, isConnected } from './util/socketIO'
 
 // dev env only
 console.warn = () => undefined;
@@ -68,6 +70,14 @@ const styles = StyleSheet.create({
 
 function NavigatorWrapper() {
   const theme = useSelector(themeSelector);
+  const accessToken = useSelector(accessTokenSelector);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (accessToken && !isConnected()) {
+      initConnection(dispatch, { accessToken })
+    }
+  }, [accessToken]);
 
   return (
     <>
@@ -106,9 +116,6 @@ export default function Wrapper() {
 
     return unsubscribe;
   }, []);
-
-  useEffect(() => {
-  }, [])
 
   return (
     <Provider store={store}>

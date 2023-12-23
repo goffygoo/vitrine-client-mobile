@@ -24,3 +24,7 @@ export const SECURE_STORAGE_KEY = {
 export const DEVICE = {
     ANDROID: 'android'
 }
+
+export const SOCKET_EVENTS = {
+    CONNECTION_ERROR: 'connect_error',
+}
