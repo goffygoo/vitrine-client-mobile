@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import colors from '../../../colors.json';
 import UpcomingTile from "./UpcomingTile";
 import Banner from "./Banner";
+import CommunityCard from "./CommunityCard";
 
 export default function LandingPage({ route, navigation }) {
     const theme = useSelector(themeSelector)
@@ -17,6 +18,8 @@ export default function LandingPage({ route, navigation }) {
                     <Text style={styles.bannerStatus}>Live Now</Text>
                     <Banner />
                 </View>
+
+                <CommunityCard />
 
                 <View style={styles.upcomingSection}>
                     <Text style={styles.heading}>Upcoming Events</Text>
@@ -80,7 +83,6 @@ const generateStyles = THEME => StyleSheet.create({
         shadowColor: colors.TEXT_COLOR[THEME],
     },
     upcomingSection: {
-        marginTop: 32,
         width: '90%',
     },
     upcomingSectionRow: {
