@@ -4,21 +4,26 @@ import { themeSelector } from '../../redux/settingReducer';
 import { useMemo } from "react";
 import colors from '../../colors.json';
 
-export default function ImageBlock() {
+export default function ImageBlock(spaceData) {
     const theme = useSelector(themeSelector)
     const styles = useMemo(() => generateStyles(theme), [theme]);
+
     return (
         <View style={styles.container}>
             <View style={styles.banner}>
                 <Image
-                    source={require('../../assets/profileCover.jpg')}
+                    source={{
+                        uri: spaceData?.pageData?.banner
+                    }}
                     style={styles.bannerImage}
                     resizeMode="cover"
                 />
             </View>
             <View style={styles.profileImageContainer}>
                 <Image
-                    source={require('../../assets/avatar_a.jpg')}
+                    source={{
+                        uri: spaceData?.pageData?.profileImg
+                    }}
                     style={styles.profileImage}
                 />
             </View>

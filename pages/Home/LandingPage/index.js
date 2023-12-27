@@ -1,15 +1,34 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from '../../../redux/settingReducer';
-import { useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import colors from '../../../colors.json';
 import UpcomingTile from "./UpcomingTile";
 import Banner from "./Banner";
 import CommunityCard from "./CommunityCard";
+import { ServiceContext } from "../../../util/context/serviceContext";
+import _ from 'lodash'
 
 export default function LandingPage({ route, navigation }) {
     const theme = useSelector(themeSelector)
     const styles = useMemo(() => generateStyles(theme), [theme]);
+    const serviceContext = useContext(ServiceContext);
+
+    const [upcomingEvents, setUpcommingEvents] = useState([]);
+
+    useEffect(() => {
+        serviceContext.request(
+            'get',
+            '/api/calendar/getUpcomingEvents',
+            {
+                rangeStart: Date.now()
+            },
+            ({ data }) => {
+                setUpcommingEvents(data.events);
+            },
+            () => undefined,
+        )
+    }, [])
 
     return (
         <ScrollView style={styles.scrollContainer}>
@@ -23,27 +42,19 @@ export default function LandingPage({ route, navigation }) {
 
                 <View style={styles.upcomingSection}>
                     <Text style={styles.heading}>Upcoming Events</Text>
-
-                    <View style={styles.upcomingSectionRow}>
-                        <UpcomingTile />
-                        <UpcomingTile />
-                    </View>
-                    <View style={styles.upcomingSectionRow}>
-                        <UpcomingTile />
-                        <UpcomingTile />
-                    </View>
-                    <View style={styles.upcomingSectionRow}>
-                        <UpcomingTile />
-                        <UpcomingTile />
-                    </View>
-                    <View style={styles.upcomingSectionRow}>
-                        <UpcomingTile />
-                        <UpcomingTile />
-                    </View>
-                    <View style={styles.upcomingSectionRow}>
-                        <UpcomingTile />
-                        <UpcomingTile />
-                    </View>
+                    {
+                        _.chunk(upcomingEvents, 2).map(chunk => {
+                            return (
+                                <View style={styles.upcomingSectionRow}>
+                                    {
+                                        chunk.map(event => <UpcomingTile 
+                                            {...event}
+                                        />)
+                                    }
+                                </View>
+                            )
+                        })
+                    }
                 </View>
             </View>
         </ScrollView>

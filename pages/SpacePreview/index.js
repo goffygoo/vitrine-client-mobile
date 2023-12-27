@@ -1,17 +1,35 @@
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../redux/settingReducer";
-import { useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import colors from '../../colors.json';
 import PrimaryButton from "../../components/widgets/buttons/PrimaryButton";
 import SecondaryButton from "../../components/widgets/buttons/SecondaryButton";
 import Divider from "../../components/widgets/Divider";
 import ImageBlock from "./ImageBlock";
 import { Entypo } from '@expo/vector-icons';
+import { ServiceContext } from "../../util/context/serviceContext";
 
 export default function SpacePreview({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
+
+    const serviceContext = useContext(ServiceContext);
+    const [spaceData, setSpaceData] = useState();
+
+    const spaceId = '6581d1ee9243062f00e5e428';
+
+    useEffect(() => {
+        serviceContext.request(
+            'get',
+            '/api/space/page/get',
+            {
+                id: spaceId
+            },
+            ({ data }) => setSpaceData(data),
+            () => undefined,
+        )
+    }, [])
 
     const handleJoin = () => {
         navigation.navigate("Checkout")
@@ -21,19 +39,12 @@ export default function SpacePreview({ route, navigation }) {
         <ScrollView style={styles.scroll}>
             <View style={styles.container}>
                 <View style={styles.mainContent}>
-                    <ImageBlock />
+                    <ImageBlock {...spaceData} />
                     <View style={[styles.hollowContainer, styles.spaceTitleContainer]}>
-                        <Text style={styles.spaceTitle}>My Space</Text>
-                        <Text style={styles.spaceDescription}>Sabe bambe liye di ha jaat paat mai</Text>
+                        <Text style={styles.spaceTitle}>{spaceData?.pageData?.heading}</Text>
+                        <Text style={styles.spaceDescription}>{spaceData?.pageData?.subHeading}</Text>
                         <Divider size={'m'} />
                         <View style={styles.spaceTitleButtonRow}>
-                            <SecondaryButton
-                                onClick={() => undefined}
-                                text={"Connect"}
-                                height={36}
-                                fontSize={20}
-                                width={128}
-                            />
                             <PrimaryButton
                                 onClick={handleJoin}
                                 text={"Join Now"}
@@ -48,20 +59,18 @@ export default function SpacePreview({ route, navigation }) {
                         <View style={styles.textBlockSection}>
                             <Text style={styles.textBlockHeading}>Highlights</Text>
                             <View style={styles.textBlockInfoTextContainer}>
-                                <Text style={styles.textBlockInfoText}><Entypo name="dot-single" />Bullet Point 1</Text>
-                                <Text style={styles.textBlockInfoText}><Entypo name="dot-single" />Bullet Point 1</Text>
-                                <Text style={styles.textBlockInfoText}><Entypo name="dot-single" />Bullet Point 1</Text>
-                                <Text style={styles.textBlockInfoText}><Entypo name="dot-single" />Bullet Point 1</Text>
-                                <Text style={styles.textBlockInfoText}><Entypo name="dot-single" />Bullet Point 1</Text>
-                                <Text style={styles.textBlockInfoText}><Entypo name="dot-single" />Bullet Point 1</Text>
+                                {spaceData?.pageData?.highlights?.map(highlight => {
+                                    return (
+                                        <Text style={styles.textBlockInfoText}><Entypo name="dot-single" />{highlight}</Text>
+                                    )
+                                })}
                             </View>
                         </View>
                         <View style={styles.textBlockHorizontalDivider} />
                         <View style={styles.textBlockSection}>
                             <Text style={styles.textBlockHeading}>Description</Text>
                             <View style={styles.textBlockInfoTextContainer}>
-                                <Text style={styles.textBlockInfoText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex </Text>
+                                <Text style={styles.textBlockInfoText}>{spaceData?.pageData?.description}</Text>
                             </View>
 
                         </View>
@@ -69,16 +78,16 @@ export default function SpacePreview({ route, navigation }) {
                     <Divider size={'l'} />
                     <View style={styles.mainContentPricingBlock}>
                         <View style={styles.pricingBlockDescriptionContainer}>
-                            <Text style={styles.pricingBlockDescriptionData}>523</Text>
+                            <Text style={styles.pricingBlockDescriptionData}>{spaceData?.space?.consumer}</Text>
                             <Text style={styles.pricingBlockDescription}>Subscribers</Text>
                         </View>
                         <View style={styles.pricingBlockDescriptionContainer}>
-                            <Text style={styles.pricingBlockDescriptionData}>2</Text>
+                            <Text style={styles.pricingBlockDescriptionData}>{spaceData?.space?.streams}</Text>
                             <Text style={styles.pricingBlockDescription}>Posts</Text>
                         </View>
                         <View style={[styles.hollowContainer, styles.pricingBlockPriceContainer]}>
                             <Text style={styles.pricingBlockPrice}>
-                                <Text style={styles.pricingBlockPriceValue}>₹ 199</Text> / month
+                                <Text style={styles.pricingBlockPriceValue}>₹ {spaceData?.space?.price}</Text>
                             </Text>
                         </View>
                         <Text style={styles.pricingBlockCancelAnytime}>Cancel Anytime.</Text>

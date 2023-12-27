@@ -3,10 +3,20 @@ import colors from '../../../colors.json';
 import { useSelector } from 'react-redux';
 import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
+import { getDateStamp, getTimeStamp } from '../../../util/helper';
 
-export default function UpcomingTile() {
+export default function UpcomingTile(event) {
   const theme = useSelector(themeSelector);
   const styles = useMemo(() => generateStyles(theme), [theme]);
+
+  const {
+    title,
+    description,
+    spaceId,
+    startTime,
+  } = event;
+
+  const dateObject = new Date(startTime);
 
   return (
     <View style={styles.container}>
@@ -16,13 +26,13 @@ export default function UpcomingTile() {
         </View>
         <View style={styles.description}>
           <Text style={styles.descriptionHeading}>
-            Art Fest City of Harrisburgh
+            {title}
           </Text>
           <Text style={styles.descriptionSubheading}>
-            Cultural Pennsylvania
+            {description}
           </Text>
           <Text style={styles.descriptionTime}>
-            25 Oct  •  7:00 pm
+            {`${getDateStamp(dateObject)} • ${getTimeStamp(dateObject)}`}
           </Text>
         </View>
       </Pressable>

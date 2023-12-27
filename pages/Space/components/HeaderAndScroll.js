@@ -42,7 +42,7 @@ export default function HeaderAndScroll({ children, navigation, hasRightDrawer }
                         <AntDesign name="menuunfold" size={24} color={colors.TEXT_COLOR_LIGHT[theme]} />
                     </Pressable>}
             </View>
-            <ScrollView style={styles.scroll}>
+            <ScrollView style={styles.scroll} overScrollMode='never' removeClippedSubviews={true} >
                 {Children.map(children, child => child)}
             </ScrollView>
         </View>
