@@ -12,6 +12,7 @@ import SpaceDrawer from './pages/SpaceDrawer'
 import Community from './pages/Community'
 import SpacePreview from './pages/SpacePreview'
 import Checkout from './pages/Checkout'
+import PaymentComplete from './pages/PaymentComplete'
 import store from './redux/store'
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { themeSelector } from './redux/settingReducer';
@@ -54,6 +55,7 @@ function App() {
         <Stack.Screen name="Community" component={Community} />
         <Stack.Screen name="SpacePreview" component={SpacePreview} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="PaymentComplete" component={PaymentComplete} />
       </Stack.Navigator>
     </ServiceContext.Provider>
 

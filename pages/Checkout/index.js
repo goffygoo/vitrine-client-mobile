@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Systrace, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../redux/settingReducer";
 import { useMemo, useState } from "react";
@@ -10,12 +10,50 @@ import { AntDesign } from '@expo/vector-icons';
 import Divider from "../../components/widgets/Divider";
 import TipModal from "../../components/widgets/TipModal";
 import Card from "./Card";
+import RazorpayCheckout from 'react-native-razorpay';
 
 export default function Checkout({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
     const [itemCount, setItemCount] = useState(3);
     const [autoPayEnabled, setAutoPayEnabled] = useState(false);
+
+    const pgOrderId = 'order_NH6aoZT9QxlK69';
+    const options = {
+        description: 'Product purchase',
+        image: 'https://i.imgur.com/3g7nmJC.jpg',
+        currency: 'INR',
+        key: 'rzp_test_QeFBI1VmGEL4NY',
+        amount: '2100',
+        name: 'BaljeetKode',
+        order_id: pgOrderId,
+        prefill: {
+            email: 'bal.jeet@example.com',
+            contact: '9191919191',
+            name: 'Badmash Baljeet'
+        },
+        theme: { color: colors.PRIMARY_COLOR }
+    }
+
+    const a = {
+        "code": 0,
+        "description": "{\"error\":{\"code\":\"BAD_REQUEST_ERROR\",\"description\":\"You may have cancelled the payment or there was a delay in response from the UPI app\",\"source\":\"customer\",\"step\":\"payment_authentication\",\"reason\":\"payment_cancelled\",\"metadata\":{}}}",
+        "error": {
+            "code": "BAD_REQUEST_ERROR",
+            "description": "You may have cancelled the payment or there was a delay in response from the UPI app", "metadata": {},
+            "reason": "payment_cancelled",
+            "source": "customer",
+            "step": "payment_authentication"
+        }
+    }
+
+    const handlePayNow = () => {
+        RazorpayCheckout.open(options).then((data) => {
+            console.log(data)
+        }).catch((err) => {
+            console.log(err)
+        });
+    }
 
     return (
         <View style={styles.fullPage}>
@@ -68,14 +106,13 @@ export default function Checkout({ route, navigation }) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <PrimaryButton
-                        onClick={() => undefined}
+                        onClick={handlePayNow}
                         text={"Pay Now"}
                     />
                 </View>
 
             </View>
         </View>
-
     )
 }
 
@@ -177,7 +214,7 @@ const generateStyles = THEME => StyleSheet.create({
         borderTopWidth: 1,
         borderColor: colors.TEXT_COLOR_ALT[THEME],
         height: 64,
-        flexDirection:'row',
+        flexDirection: 'row',
         alignItems: 'center',
         width: '100%'
     },
