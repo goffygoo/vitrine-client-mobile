@@ -25,23 +25,20 @@ export default function PaymentComplete({ route, navigation }) {
     useEffect(() => {
         setTimeout(() => {
             navigation.reset({
-                index: 1,
+                index: 0,
                 routes: [
                     {
                         name: 'Home',
-                        params: {
-                            screen: 'LandingPage'
-                        }
-                    },
-                    {
-                        name: 'Home',
-                        params: {
-                            screen: 'SpacesPage'
+                        state: {
+                            routes: [
+                                'SpacesPage',
+                                'LandingPage'
+                            ]
                         }
                     },
                 ],
             })
-        }, 5000);
+        }, 1000);
     }, [])
 
     return (
