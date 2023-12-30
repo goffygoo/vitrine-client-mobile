@@ -1,12 +1,48 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, BackHandler, Alert } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../redux/settingReducer";
 import colors from './../colors.json';
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import { showToast } from "../components/widgets/Toast";
+
 
 export default function PaymentComplete({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
+
+    useEffect(() => {
+        const backAction = () => {
+            showToast('Please wait')
+          return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+          'hardwareBackPress',
+          backAction,
+        );
+        return () => backHandler.remove();
+      }, []);
+
+    useEffect(() => {
+        setTimeout(() => {
+            navigation.reset({
+                index: 1,
+                routes: [
+                    {
+                        name: 'Home',
+                        params: {
+                            screen: 'LandingPage'
+                        }
+                    },
+                    {
+                        name: 'Home',
+                        params: {
+                            screen: 'SpacesPage'
+                        }
+                    },
+                ],
+            })
+        }, 5000);
+    }, [])
 
     return (
         <View style={styles.container}>

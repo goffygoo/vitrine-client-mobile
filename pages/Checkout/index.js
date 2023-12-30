@@ -6,7 +6,6 @@ import colors from '../../colors.json';
 import Header from "./Header";
 import PrimaryButton from "../../components/widgets/buttons/PrimaryButton";
 import Divider from "../../components/widgets/Divider";
-import TipModal from "../../components/widgets/TipModal";
 import Card from "./Card";
 import RazorpayCheckout from 'react-native-razorpay';
 import { ServiceContext } from "../../util/context/serviceContext";
@@ -39,7 +38,6 @@ export default function Checkout({ route, navigation }) {
         setShowModal(true);
         setPaymentInitiated(false);
     }
-
 
     const options = {
         description: 'Product purchase',
