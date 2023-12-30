@@ -4,7 +4,7 @@ import { themeSelector } from "../../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../../colors.json';
 
-export default function GlassButton({ text, onClick, height = 48, width, fontSize = 24 }) {
+export default function GlassButton({ text, onClick, height = 48, width='auto', fontSize = 24 }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 

@@ -5,55 +5,60 @@ import { useMemo } from "react";
 import colors from '../../colors.json';
 import { Entypo } from '@expo/vector-icons';
 
-export default function SpaceCard({ navigation }) {
+export default function SpaceCard({ pageData, space, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     return (
         <Pressable
             style={styles.container}
-            onPress={() => navigation.navigate("SpacePreview")}
+            onPress={() => navigation.navigate("SpacePreview", {
+                spaceId: pageData.id
+            })}
             android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
         >
             <View style={styles.main}>
                 <Image
                     style={styles.image}
-                    source={require('../../assets/cover_13.jpg')}
+                    source={{
+                        uri: pageData.banner
+                    }}
                     resizeMode="cover"
                 />
                 <View style={styles.content}>
                     <View style={styles.heading}>
                         <Image
                             style={styles.providerImage}
-                            source={require('../../assets/avatar_a.jpg')}
+                            source={{
+                                uri: pageData.profileImg
+                            }}
                             resizeMode="cover"
                         />
-                        <Text style={styles.title}>Baljeetkode</Text>
+                        <Text style={styles.title}>{pageData.heading}</Text>
                     </View>
                     <Text style={styles.description}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        {pageData.subHeading}
                     </Text>
                 </View>
             </View>
             <View style={styles.footer}>
                 <Text style={styles.footerText}>
-                    Members
-                    <Text style={styles.footerTextValue}>  104</Text>
+                    Subscribers
+                    <Text style={styles.footerTextValue}>  {space.consumer}</Text>
                 </Text>
                 <Text style={styles.footerText}>
                     <Entypo name="dot-single" />
                 </Text>
                 <Text style={styles.footerText}>
-                    Something
-                    <Text style={styles.footerTextValue}>  69</Text>
+                    Posts
+                    <Text style={styles.footerTextValue}>  {space.streams}</Text>
                 </Text>
                 <Text style={styles.footerText}>
                     <Entypo name="dot-single" />
                 </Text>
                 <Text style={styles.footerText}>
                     Price
-                    <Text style={styles.footerTextValue}>  FREE</Text>
+                    <Text style={[styles.footerTextValue, space.price === 0 && styles.footerTextValueEmphasis]}>  {space.price || "FREE"}</Text>
                 </Text>
             </View>
         </Pressable>
@@ -99,13 +104,14 @@ const generateStyles = THEME => StyleSheet.create({
     description: {
         fontSize: 12,
         fontWeight: '300',
-        paddingVertical: 4,
+        paddingTop: 4,
         color: colors.TEXT_COLOR[THEME],
     },
     footer: {
         backgroundColor: colors.FADE[THEME],
         borderRadius: 2,
         width: '100%',
+        marginTop: 8,
         paddingVertical: 4,
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -121,4 +127,8 @@ const generateStyles = THEME => StyleSheet.create({
         color: colors.TEXT_COLOR_ALT[THEME],
         fontWeight: '500',
     },
+    footerTextValueEmphasis: {
+        color: colors.PRIMARY_COLOR,
+        fontWeight: '600',
+    }
 })

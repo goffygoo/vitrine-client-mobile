@@ -4,20 +4,23 @@ import { themeSelector } from "../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../colors.json';
 
-export default function Card({ route, navigation }) {
+export default function Card(pageData) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
+    const { heading, subHeading, banner } = pageData;
     return (
         <View style={styles.container}>
             <Image
-                source={require('../../assets/cover_space.jpg')}
+                source={{
+                    uri: banner
+                }}
                 style={styles.image}
                 resizeMode="cover"
             />
             <View style={styles.textContainer}>
-                <Text style={styles.heading}>Bengali Black Magic in 1O days</Text>
-                <Text style={styles.subHeading}>Humba humba bumba bumba</Text>
+                <Text style={styles.heading}>{heading}</Text>
+                <Text style={styles.subHeading}>{subHeading}</Text>
             </View>
         </View>
     )

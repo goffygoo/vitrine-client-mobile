@@ -38,8 +38,9 @@ const refresh_access_token = async (navigation) => {
         });
         await setSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN, data.data.accessToken)
         return true;
-    } catch {
+    } catch (_e) {
         navigation.navigate("LoginPage");
+        return false;
     }
 };
 
@@ -106,7 +107,11 @@ export const resource_request_with_access_token =
                 })
                 .catch(async (err) => {
                     if (err?.response?.data?.invalid) {
-                        await refresh_access_token(navigation);
+                        const refresh = await refresh_access_token(navigation);
+                        if (!refresh) {
+                            onError(err);
+                            return;
+                        }
                         if (level >= 5) onError(err);
                         else
                             resource_request_with_access_token(navigation)(

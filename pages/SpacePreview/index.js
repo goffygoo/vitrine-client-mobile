@@ -1,4 +1,4 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../redux/settingReducer";
 import { useContext, useEffect, useMemo, useState } from "react";
@@ -14,15 +14,15 @@ export default function SpacePreview({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
+    const { spaceId } = route.params;
+
     const serviceContext = useContext(ServiceContext);
     const [spaceData, setSpaceData] = useState();
-
-    const spaceId = '6581d1ee9243062f00e5e428';
 
     useEffect(() => {
         serviceContext.request(
             'get',
-            '/api/space/page/get',
+            '/api/community/space/page',
             {
                 id: spaceId
             },
@@ -32,7 +32,14 @@ export default function SpacePreview({ route, navigation }) {
     }, [])
 
     const handleJoin = () => {
-        navigation.navigate("Checkout")
+        navigation.navigate("Checkout", {
+            ...spaceData
+        });
+    }
+
+    const openLink = (url) => {
+        if (!url) return;
+        Linking.openURL(url);
     }
 
     return (
@@ -114,6 +121,7 @@ export default function SpacePreview({ route, navigation }) {
                     <View style={styles.socialMediaIconContainer}>
                         <Pressable
                             android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
+                            onPress={() => openLink(spaceData?.space?.socialMedia?.linkedIn)}
                         >
                             <Image
                                 style={styles.socialMediaIcon}
@@ -123,6 +131,7 @@ export default function SpacePreview({ route, navigation }) {
                         </Pressable>
                         <Pressable
                             android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
+                            onPress={() => openLink(spaceData?.space?.socialMedia?.instagram)}
                         >
                             <Image
                                 style={styles.socialMediaIcon}
@@ -132,6 +141,7 @@ export default function SpacePreview({ route, navigation }) {
                         </Pressable>
                         <Pressable
                             android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
+                            onPress={() => openLink(spaceData?.space?.socialMedia?.x)}
                         >
                             <Image
                                 style={styles.socialMediaIcon}

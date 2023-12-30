@@ -18,9 +18,15 @@ export default function UpcomingTile(event) {
 
   const dateObject = new Date(startTime);
 
+  const handlePress = async () => {}
+
   return (
     <View style={styles.container}>
-      <Pressable style={styles.pressable} android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}>
+      <Pressable
+        style={styles.pressable}
+        android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
+        onPress={handlePress}
+      >
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={require('../../../assets/EventCover.png')} />
         </View>

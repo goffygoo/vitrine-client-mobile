@@ -9,6 +9,7 @@ export default function TextInputBox({
     fontWeight = '400',
     width = '100%',
     fontSize = 20,
+    onSubmitEditing = () => undefined,
 }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
@@ -35,6 +36,7 @@ export default function TextInputBox({
                         width
                     }, { ...(changeBackground) }]}
                 onChangeText={onChange}
+                onSubmitEditing={onSubmitEditing}
             />
         </View>
     )

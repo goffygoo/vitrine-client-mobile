@@ -1,116 +1,154 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../redux/settingReducer";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import colors from '../../colors.json';
 import Header from "./Header";
 import PrimaryButton from "../../components/widgets/buttons/PrimaryButton";
-import CheckBox from "../../components/widgets/input/CheckBox";
-import { AntDesign } from '@expo/vector-icons';
 import Divider from "../../components/widgets/Divider";
 import TipModal from "../../components/widgets/TipModal";
 import Card from "./Card";
 import RazorpayCheckout from 'react-native-razorpay';
+import { ServiceContext } from "../../util/context/serviceContext";
+import { showToast } from "../../components/widgets/Toast";
+import GlassButton from "../../components/widgets/buttons/GlassButton";
+import FloatingModalSmall from "../../components/modal/FloatingModalSmall";
 
 export default function Checkout({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
-    const [itemCount, setItemCount] = useState(3);
-    const [autoPayEnabled, setAutoPayEnabled] = useState(false);
 
-    const pgOrderId = 'order_NH6aoZT9QxlK69';
+    const serviceContext = useContext(ServiceContext);
+
+    const { pageData, space } = route.params;
+    const [paymentInitiated, setPaymentInitiated] = useState(false);
+
+    const [showModal, setShowModal] = useState(false);
+
+    const paymentFailed = () => {
+        showToast('Something went wrong');
+        setPaymentInitiated(false);
+    }
+
+    const paymentSuccess = () => {
+        setPaymentInitiated(false);
+        navigation.navigate("PaymentComplete");
+    }
+
+    const refundPayment = () => {
+        setShowModal(true);
+        setPaymentInitiated(false);
+    }
+
+
     const options = {
         description: 'Product purchase',
         image: 'https://i.imgur.com/3g7nmJC.jpg',
         currency: 'INR',
-        key: 'rzp_test_QeFBI1VmGEL4NY',
-        amount: '2100',
+        amount: (space.amount * 100).toString(),
         name: 'BaljeetKode',
-        order_id: pgOrderId,
         prefill: {
-            email: 'bal.jeet@example.com',
-            contact: '9191919191',
-            name: 'Badmash Baljeet'
+            email: '',
+            contact: '',
+            name: ''
         },
         theme: { color: colors.PRIMARY_COLOR }
     }
 
-    const a = {
-        "code": 0,
-        "description": "{\"error\":{\"code\":\"BAD_REQUEST_ERROR\",\"description\":\"You may have cancelled the payment or there was a delay in response from the UPI app\",\"source\":\"customer\",\"step\":\"payment_authentication\",\"reason\":\"payment_cancelled\",\"metadata\":{}}}",
-        "error": {
-            "code": "BAD_REQUEST_ERROR",
-            "description": "You may have cancelled the payment or there was a delay in response from the UPI app", "metadata": {},
-            "reason": "payment_cancelled",
-            "source": "customer",
-            "step": "payment_authentication"
-        }
-    }
-
     const handlePayNow = () => {
-        RazorpayCheckout.open(options).then((data) => {
-            console.log(data)
-        }).catch((err) => {
-            console.log(err)
-        });
+        if (paymentInitiated) return;
+        setPaymentInitiated(true);
+        serviceContext.request(
+            'post',
+            '/api/monet/order/createOrder',
+            {
+                spaceId: pageData.id,
+                amount: space.price,
+            },
+            ({ data }) => {
+                RazorpayCheckout.open({
+                    ...options,
+                    order_id: data.pgOrderId,
+                    key: data.pgKey,
+                }).then((data) => {
+                    serviceContext.request(
+                        'post',
+                        '/api/monet/order/confirm',
+                        {
+                            razorpayPaymentId: data.razorpay_payment_id
+                        },
+                        ({ data }) => {
+                            if (data.paymentSuccess) {
+                                paymentSuccess();
+                            } else if (data.refundPayment) {
+                                refundPayment();
+                            } else {
+                                paymentFailed();
+                            }
+                        },
+                        () => {
+                            paymentFailed();
+                        }
+                    )
+                }).catch(() => {
+                    paymentFailed();
+                });
+            },
+            () => {
+                paymentFailed();
+            },
+        )
     }
 
     return (
         <View style={styles.fullPage}>
+            <FloatingModalSmall
+                visible={showModal}
+                closeModal={() => setShowModal(false)}
+            >
+                <Text style={styles.modalText}>{'You have already brought this course.\n\nAny additional payment deducted for this will be refunded.'}</Text>
+            </FloatingModalSmall>
             <ScrollView style={styles.scroll}>
                 <Header />
                 <View style={styles.container}>
-                    <Text style={styles.sectionHeading}>Payment Details</Text>
-                    <Text style={styles.priceTag}>₹ <Text style={styles.priceTagAmount}>199</Text> / month</Text>
-                    <Text style={styles.sectionText}>Paying for</Text>
-                    <View style={styles.itemCountContainer}>
-                        <Text style={styles.itemCountValue}>{itemCount}</Text>
-                        <Text style={styles.itemCountDescription}>months</Text>
-                        <View style={styles.itemCountButtons}>
-                            <PrimaryButton
-                                onClick={() => setItemCount(i => i + 1)}
-                                text={<AntDesign name="plus" size={20} />}
-                                fontWeight="500"
-                                height={40}
-                            />
-                            <PrimaryButton
-                                onClick={() => setItemCount(i => i - 1)}
-                                text={<AntDesign name="minus" size={20} />}
-                                fontWeight="500"
-                                height={40}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.autoPayContainer}>
-                        <CheckBox
-                            checked={autoPayEnabled}
-                            onChange={v => setAutoPayEnabled(v)}
-                            text={"Enable Auto Payment"}
-                            width={"auto"}
-                        />
-                        <Divider size={"m"} orientation="v" />
-                        <TipModal
-                            text={"Enable consecutive payments to debit automatically for seamless experience. You can opt out any time."}
-                        />
-                    </View>
-                    <View style={styles.horizontalDivider} />
-                    <Divider size={"xl"} />
                     <Text style={styles.sectionHeading}>You are about to buy : </Text>
-                    <Card />
-                    <Text style={styles.sectionHeading}>Plan Type : <Text style={styles.planType}>Monthly Subscription</Text></Text>
+                    <Card {...pageData} />
+                    <Divider size={'l'} />
+                    <Text style={styles.sectionHeading}>Plan Type : <Text style={[styles.planType, (!space.price) && styles.priceTagAmount]}>{space.price ? 'Purchase' : 'FREE'}</Text></Text>
+                    {
+                        !!space.price && (
+                            <Text style={styles.priceTag}><Text style={styles.priceTagDescription}>Net Total:</Text> ₹ <Text style={styles.priceTagAmount}>{space.price}</Text></Text>
+                        )
+                    }
+                </View>
+                <Divider size={'xl'} />
+                <Divider size={'xl'} />
+                <View style={styles.supportContainer}>
+                    <GlassButton
+                        onClick={() => undefined}
+                        text={"Refund Policy"}
+                        fontSize={12}
+                        height={32}
+                    />
+                    <Divider size={'m'} />
+                    <GlassButton
+                        onClick={() => undefined}
+                        text={"Need Help ?"}
+                        fontSize={12}
+                        height={32}
+                    />
                 </View>
             </ScrollView>
             <View style={styles.footer}>
                 <View style={styles.amountContainer}>
-                    <Text style={styles.amountText}>₹ <Text style={styles.amountValue}>596</Text></Text>
+                    <Text style={styles.amountText}>₹ <Text style={styles.amountValue}>{space.price}</Text></Text>
                 </View>
                 <View style={styles.buttonContainer}>
                     <PrimaryButton
                         onClick={handlePayNow}
-                        text={"Pay Now"}
+                        text={!!space.price ? "Pay Now" : "Buy Now"}
                     />
                 </View>
-
             </View>
         </View>
     )
@@ -135,10 +173,11 @@ const generateStyles = THEME => StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 8,
     },
-    horizontalDivider: {
-        height: 1,
-        width: '100%',
-        backgroundColor: colors.TEXT_COLOR_ALT[THEME],
+    modalText: {
+        color: colors.TEXT_COLOR[THEME],
+        fontSize: 24,
+        fontWeight: '300',
+        padding: 16,
     },
     sectionHeading: {
         color: colors.TEXT_COLOR[THEME],
@@ -148,10 +187,13 @@ const generateStyles = THEME => StyleSheet.create({
     },
     priceTag: {
         color: colors.TEXT_COLOR[THEME],
-        fontSize: 18,
-        lineHeight: 18,
-        marginVertical: 16,
+        fontSize: 24,
+        marginVertical: 8,
         fontWeight: '500',
+    },
+    priceTagDescription: {
+        fontSize: 18,
+        fontWeight: '400',
     },
     priceTagAmount: {
         color: colors.PRIMARY_COLOR,
@@ -162,52 +204,11 @@ const generateStyles = THEME => StyleSheet.create({
         fontSize: 18,
         marginVertical: 4,
     },
-    itemCountContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 8,
-    },
-    itemCountValue: {
-        backgroundColor: colors.INPUT_BG_COLOR[THEME],
-        height: 40,
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        width: 48,
-        borderRadius: 4,
-        color: colors.INPUT_TEXT_COLOR[THEME],
-        fontWeight: '700',
-        fontSize: 20,
-    },
-    itemCountDescription: {
-        paddingHorizontal: 16,
-        borderRadius: 2,
-        color: colors.TEXT_COLOR[THEME],
-        fontWeight: '500',
-        fontSize: 18,
-    },
-    itemCountButtons: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-    },
-    autoPayContainer: {
-        flexDirection: 'row',
-        width: '100%',
-        alignItems: 'center',
-        marginVertical: 8,
-    },
-    cardContainer: {
-        height: 100,
-        width: '100%',
-        borderWidth: 1,
-        borderRadius: 4,
-        borderColor: colors.TEXT_COLOR_ALT[THEME],
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        marginVertical: 8,
-    },
     planType: {
         fontWeight: '500',
+    },
+    supportContainer: {
+        alignItems: 'flex-start',
     },
     footer: {
         backgroundColor: colors.BG_COLOR[THEME],
