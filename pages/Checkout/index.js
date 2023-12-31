@@ -54,7 +54,6 @@ export default function Checkout({ route, navigation }) {
     }
 
     const handlePayNow = () => {
-        return paymentSuccess();
         if (paymentInitiated) return;
         setPaymentInitiated(true);
         serviceContext.request(

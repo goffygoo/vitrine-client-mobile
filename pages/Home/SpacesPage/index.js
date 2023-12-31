@@ -1,34 +1,50 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../../redux/settingReducer";
-import { useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import colors from '../../../colors.json';
 import Tile from "./Tile";
+import { ServiceContext } from "../../../util/context/serviceContext";
+import _ from 'lodash'
 
 export default function SpacesPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
+    const serviceContext = useContext(ServiceContext);
+
+    const [spaces, setSpaces] = useState([])
+
+    useEffect(() => {
+        serviceContext.request(
+            'get',
+            '/api/consumer/getAllSpaces',
+            {},
+            ({ data }) => setSpaces(data.spaces),
+            () => undefined
+        )
+    }, [])
+
 
     return (
         <ScrollView style={styles.scrollContainer}>
             <View style={styles.container}>
                 <Text style={styles.heading}>My Spaces</Text>
-
-                <View style={styles.tileRow}>
-                    <Tile onClick={() => navigation.navigate('Space')} />
-                    <Tile onClick={() => navigation.navigate('Space')} />
-                </View>
-                <View style={styles.tileRow}>
-                    <Tile onClick={() => navigation.navigate('Space')} />
-                    <Tile onClick={() => navigation.navigate('Space')} />
-                </View>
-                <View style={styles.tileRow}>
-                    <Tile onClick={() => navigation.navigate('Space')} />
-                    <Tile onClick={() => navigation.navigate('Space')} />
-                </View>
-                <View style={styles.tileRow}>
-                    <Tile onClick={() => navigation.navigate('Space')} />
-                </View>
+                {
+                    _.chunk(spaces, 2).map(chunk => {
+                        return (
+                            <View style={styles.tileRow}>
+                                {
+                                    chunk.map(space =>
+                                        <Tile
+                                            {...space}
+                                            onClick={() => navigation.navigate('Space')}
+                                        />
+                                    )
+                                }
+                            </View>
+                        )
+                    })
+                }
             </View>
         </ScrollView>
     )

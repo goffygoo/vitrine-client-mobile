@@ -4,9 +4,17 @@ import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
 import colors from '../../../colors.json';
 
-export default function Tile({ onClick }) {
+export default function Tile({ onClick, ...space }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
+
+    const {
+        _id,
+        coverPicture,
+        displayPicture,
+        title,
+        description,
+    } = space;
 
     return (
         <View style={styles.container}>
@@ -15,13 +23,24 @@ export default function Tile({ onClick }) {
                 android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
                 onPress={onClick}
             >
-                <Image style={styles.bannerImage} source={require('../../../assets/cover_space.jpg')} resizeMode='cover' />
+                <Image
+                    style={styles.bannerImage}
+                    source={{
+                        uri: coverPicture
+                    }}
+                    resizeMode='cover'
+                />
                 <View style={styles.profileImageContainer}>
-                    <Image style={styles.profileImage} source={require('../../../assets/avatar_a.jpg')} resizeMode='contain' />
+                    <Image
+                        style={styles.profileImage}
+                        source={{
+                            uri: displayPicture
+                        }}
+                        resizeMode='contain' />
                 </View>
                 <View style={styles.infoContainer}>
-                    <Text style={styles.heading}>Title goes here hehe</Text>
-                    <Text style={styles.subHeading}>Subtitle goes brr</Text>
+                    <Text style={styles.heading}>{title}</Text>
+                    <Text style={styles.subHeading}>{description}</Text>
                 </View>
                 <View style={styles.footer}>
                     <Text style={styles.footerText}><Text style={styles.footerTextEmphasis}>7</Text> new messages</Text>
@@ -42,13 +61,7 @@ const generateStyles = THEME => StyleSheet.create({
         overflow: 'hidden',
     },
     pressable: {
-        // width: '45%',
-        // backgroundColor: 'red',
-        // backgroundColor: colors.BG_COLOR_MODAL[THEME],
-        // borderRadius: 8,
-        // elevation: 4,
-        // shadowColor: colors.TEXT_COLOR[THEME],
-        // overflow: 'hidden',
+        flex: 1,
     },
     bannerImage: {
         height: 64,
