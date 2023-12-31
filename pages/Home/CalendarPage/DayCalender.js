@@ -1,8 +1,8 @@
 import CalenderSlider from "./CalendarSlider";
 import { useRef, useState } from "react";
-import _ from "lodash";
 import { DAYS_LIST, MONTHS_LIST } from '../../../constants';
 import DayCalenderSlide from "./DayCalenderSlide";
+import _ from "lodash";
 
 const getFullSchedule = (year, month, date) => {
     return [
@@ -42,7 +42,7 @@ const getFullSchedule = (year, month, date) => {
 const getCalenderData = (year, month, date) => {
     const dateObject = new Date(year, month, date);
     const monthText = MONTHS_LIST[month];
-    const daysText = DAYS_LIST[dateObject.getDay()];
+    const daysText = `${date} ${monthText.slice(0, 3)}, ${DAYS_LIST[dateObject.getDay()].slice(0, 3)}`;
     return {
         year,
         month,
