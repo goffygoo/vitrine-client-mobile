@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { themeSelector } from '../../../redux/settingReducer';
+import { themeSelector } from '../../redux/settingReducer';
 import { useMemo } from "react";
-import colors from '../../../colors.json';
+import colors from '../../colors.json';
+import _ from 'lodash';
 
-export default function MonthCalenderSlide({ year, month, fullCalendar }) {
+export default function MonthCalenderSlide({ year, month, fullCalendar, cellPress }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
@@ -54,21 +55,36 @@ export default function MonthCalenderSlide({ year, month, fullCalendar }) {
                             {
                                 row.map((cell, cellIndex) => {
                                     return (
-                                        <View
+                                        <Pressable
                                             style={[
-                                                cellIndex === 0 ? styles.tableFirstCell : styles.tableCell, 
+                                                cellIndex === 0 ? styles.tableFirstCell : styles.tableCell,
                                             ]}
+                                            onPress={() => cellPress({ ...cell, year, month, rowIndex })}
                                         >
-                                            <Text 
-                                            style={[
-                                                styles.tableCellText,
-                                                !cell.isCurrent ? styles.tableCellTextFade : {},
-                                                cell.isToday ? styles.tableCellTextToday : {},
-                                            ]}
+                                            <Text
+                                                style={[
+                                                    styles.tableCellText,
+                                                    !cell.isCurrent ? styles.tableCellTextFade : {},
+                                                    cell.isToday ? styles.tableCellTextToday : {},
+                                                ]}
                                             >
                                                 {cell.date}
                                             </Text>
-                                        </View>
+                                            {
+                                                _.chunk(cell.events, 2).map(chunk => {
+                                                    return (
+                                                        <View style={styles.miniEventsRow}>
+                                                            {
+                                                                chunk.map(e => <View style={[
+                                                                    styles.colorBox,
+                                                                    { backgroundColor: e.color }
+                                                                ]} />)
+                                                            }
+                                                        </View>
+                                                    )
+                                                })
+                                            }
+                                        </Pressable>
                                     )
                                 })
                             }
@@ -140,5 +156,17 @@ const generateStyles = THEME => StyleSheet.create({
     tableCellTextToday: {
         color: colors.PRIMARY_COLOR,
         fontWeight: '700',
-    }
+    },
+    miniEventsRow: {
+        marginVertical: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+    colorBox: {
+        marginHorizontal: 4,
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+    },
 })

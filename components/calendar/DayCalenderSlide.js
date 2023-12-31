@@ -1,8 +1,9 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { themeSelector } from '../../../redux/settingReducer';
+import { themeSelector } from '../../redux/settingReducer';
 import { useMemo } from "react";
-import colors from '../../../colors.json';
+import colors from '../../colors.json';
+import { getTimeStamp } from "../../util/helper";
 
 export default function DayCalenderSlide({
     year, month, date, monthText, daysText, title, fullSchedule
@@ -14,7 +15,7 @@ export default function DayCalenderSlide({
         <View style={styles.container}>
             <ScrollView style={styles.scroll}>
                 <View style={styles.scrollContainer}>
-                    {[...fullSchedule, ...fullSchedule, ...fullSchedule].map(event => {
+                    {fullSchedule?.map(event => {
                         return (
                             <View style={styles.eventRow}>
                                 <View style={[
@@ -23,11 +24,16 @@ export default function DayCalenderSlide({
                                 ]} />
                                 <View style={styles.eventRowText}>
                                     <Text style={styles.eventRowTitle}>{event.title}</Text>
-                                    <Text style={styles.eventRowTiming}>{`${event.startTime} - ${event.endTime}`}</Text>
+                                    <Text style={styles.eventRowTiming}>{`${getTimeStamp(new Date(event.startTime))} - ${getTimeStamp(new Date(event.endTime))}`}</Text>
                                 </View>
                             </View>
                         )
                     })}
+                    {
+                        !fullSchedule?.length && (
+                            <Text style={styles.noEvents}>No Events</Text>
+                        )
+                    }
                 </View>
             </ScrollView>
         </View>
@@ -73,4 +79,11 @@ const generateStyles = THEME => StyleSheet.create({
         fontWeight: '400',
         color: colors.INPUT_PLACEHOLDER[THEME],
     },
+    noEvents: {
+        fontSize: 20,
+        textAlign: 'center',
+        marginTop: 64,
+        fontWeight: '300',
+        color: colors.TEXT_COLOR_LIGHT[THEME],
+    }
 })

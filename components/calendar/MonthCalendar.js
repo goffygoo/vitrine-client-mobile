@@ -1,66 +1,7 @@
 import CalenderSlider from "./CalendarSlider";
 import { useRef, useState } from "react";
-import _ from "lodash";
-import { MONTHS_LIST } from "../../../constants";
 import MonthCalenderSlide from "./MonthCalenderSlide";
-
-const getFullCalendar = (year, month) => {
-    const now = new Date();
-
-    let date = new Date(year, month, 1);
-    let calendar = [], week = Array(7).fill(0).map(() => ({}));
-
-    if (date.getDay() !== 0) {
-        date.setDate(0);
-
-        while (date.getDay() !== 6) {
-            week[date.getDay()].date = date.getDate();
-            week[date.getDay()].isCurrent = false;
-            week[date.getDay()].isToday = (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate());
-
-            date.setDate(date.getDate() - 1);
-        }
-
-        date = new Date(year, month, 1);
-    }
-
-    while (date.getMonth() === month) {
-        week[date.getDay()].date = date.getDate();
-        week[date.getDay()].isCurrent = true;
-        week[date.getDay()].isToday = (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate());
-
-        date.setDate(date.getDate() + 1);
-
-        if (date.getDay() === 0) {
-            calendar.push([...week]);
-            week = Array(7).fill(0).map(() => ({}));
-        }
-    }
-
-    if (date.getDay() !== 0) {
-        while (date.getDay() !== 0) {
-            week[date.getDay()].date = date.getDate();
-            week[date.getDay()].isCurrent = false;
-            week[date.getDay()].isToday = (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate());
-
-            date.setDate(date.getDate() + 1);
-        }
-
-        calendar.push([...week]);
-    }
-
-    return calendar;
-}
-
-const getCalenderData = (year, month) => {
-    const monthText = MONTHS_LIST[month];
-    return {
-        year,
-        month,
-        title: monthText,
-        fullCalendar: getFullCalendar(year, month),
-    }
-}
+import _ from "lodash";
 
 const monthMinusOne = (year, month) => {
     return month === 0 ? [year - 1, 11] : [year, month - 1];
@@ -70,7 +11,7 @@ const monthPlusOne = (year, month) => {
     return month === 11 ? [year + 1, 0] : [year, month + 1];
 }
 
-export default function MonthCalendar() {
+export default function MonthCalendar({ getCalenderData, cellPress }) {
     const date = useRef(new Date());
     const month = date.current.getMonth();
     const year = date.current.getFullYear();
@@ -133,6 +74,7 @@ export default function MonthCalendar() {
     return (
         <CalenderSlider
             SliderChild={MonthCalenderSlide}
+            cellPress={cellPress}
             sliderData={sliderData}
             addItemBack={addItemBack}
             addItemFront={addItemFront}

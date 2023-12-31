@@ -4,8 +4,8 @@ import Animated, { Easing, runOnJS, useSharedValue, withTiming } from "react-nat
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { themeSelector } from "../../../redux/settingReducer";
-import colors from '../../../colors.json';
+import { themeSelector } from "../../redux/settingReducer";
+import colors from '../../colors.json';
 
 const WIDTH = 350;
 const HORIZONTAL_MARGIN = 50;
@@ -13,6 +13,7 @@ const VERTICAL_MARGIN = 10;
 
 export default function CalenderSlider({
     SliderChild,
+    cellPress = () => undefined,
     sliderData,
     addItemFront,
     addItemBack,
@@ -146,7 +147,7 @@ export default function CalenderSlider({
                                                 </Pressable>
                                             </View>
                                         </View>
-                                        <SliderChild {...sliderData[index]} />
+                                        <SliderChild {...sliderData[index]} cellPress={cellPress} />
                                     </Animated.View>
                                 )
                             })

@@ -1,58 +1,7 @@
 import CalenderSlider from "./CalendarSlider";
 import { useRef, useState } from "react";
-import { DAYS_LIST, MONTHS_LIST } from '../../../constants';
 import DayCalenderSlide from "./DayCalenderSlide";
 import _ from "lodash";
-
-const getFullSchedule = (year, month, date) => {
-    return [
-        {
-            startTime: '10:00 am',
-            endTime: '12:30 pm',
-            title: 'Daily Sync up',
-            color: '#AF96F6',
-        }, 
-        {
-            startTime: '10:00 am',
-            endTime: '12:30 pm',
-            title: 'Global Event',
-            color: '#AFE5B1',
-        },
-        {
-            startTime: '10:00 am',
-            endTime: '12:30 pm',
-            title: 'Event I',
-            color: '#788DFF',
-        },
-        {
-            startTime: '10:00 am',
-            endTime: '12:30 pm',
-            title: 'Event II',
-            color: '#FFBF90',
-        },
-        {
-            startTime: '10:00 am',
-            endTime: '12:30 pm',
-            title: 'Town Hall meeting',
-            color: '#AAD6EE',
-        },
-    ];
-}
-
-const getCalenderData = (year, month, date) => {
-    const dateObject = new Date(year, month, date);
-    const monthText = MONTHS_LIST[month];
-    const daysText = `${date} ${monthText.slice(0, 3)}, ${DAYS_LIST[dateObject.getDay()].slice(0, 3)}`;
-    return {
-        year,
-        month,
-        date,
-        monthText,
-        daysText,
-        title: daysText,
-        fullSchedule: getFullSchedule(year, month, date),
-    }
-}
 
 const dateMinusOne = (year, month, date) => {
     const dateObject = new Date(year, month, date);
@@ -66,13 +15,22 @@ const datePlusOne = (year, month, date) => {
     return [dateObject.getFullYear(), dateObject.getMonth(), dateObject.getDate()];
 }
 
-export default function DayCalender() {
+export default function DayCalender({
+    getCalenderData,
+    gotoDate,
+    gotoMonth,
+    gotoYear,
+}) {
     const dateObject = useRef(new Date());
     const month = dateObject.current.getMonth();
     const year = dateObject.current.getFullYear();
     const date = dateObject.current.getDate();
 
-    const [sliderData, setSliderData] = useState([getCalenderData(...dateMinusOne(year, month, date)), getCalenderData(year, month, date), getCalenderData(...datePlusOne(year, month, date))])
+    const defaultDate = gotoDate ?? date;
+    const defaultMonth = gotoMonth ?? month;
+    const defaultYear = gotoYear ?? year;
+
+    const [sliderData, setSliderData] = useState([getCalenderData(...dateMinusOne(defaultYear, defaultMonth, defaultDate)), getCalenderData(defaultYear, defaultMonth, defaultDate), getCalenderData(...datePlusOne(defaultYear, defaultMonth, defaultDate))])
 
     const setSliderDataBack = (year, month, date) => {
         setSliderData(arr => {
