@@ -76,7 +76,7 @@ export default function ImageBlock() {
             "/uploadFile",
             formData,
             ({ data: { filename } }) => updateProfile(filename),
-            console.log
+            () => undefined
         );
     }
 
