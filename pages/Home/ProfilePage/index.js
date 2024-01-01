@@ -1,7 +1,7 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { themeSelector, toggleTheme } from '../../../redux/settingReducer';
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import colors from '../../../colors.json';
 import SectionBlock from "./SectionBlock";
 import ImageBlock from "./ImageBlock";
@@ -16,13 +16,17 @@ import ToggleSwitch from "../../../components/widgets/input/ToggleSwitch";
 import { resetAuthData } from "../../../redux/authReducer";
 import { removeItem, removeSecureItem } from "../../../util/storage";
 import { SECURE_STORAGE_KEY, STORAGE_KEY } from "../../../constants";
+import { ServiceContext } from "../../../util/context/serviceContext";
+import { profileNameSelector, setProfileName, setProfilePicture, setProfileSpaces } from "../../../redux/profileReducer";
 
 export default function ProfilePage({ route, navigation }) {
     const theme = useSelector(themeSelector)
     const styles = useMemo(() => generateStyles(theme), [theme]);
-    const [showPoupup, setShowPopup] = useState(false);
-
+    const serviceContext = useContext(ServiceContext);
     const dispatch = useDispatch();
+
+    const profileName = useSelector(profileNameSelector);
+    const [showPoupup, setShowPopup] = useState(false);
 
     const toggle = () => {
         dispatch(toggleTheme());
@@ -38,7 +42,7 @@ export default function ProfilePage({ route, navigation }) {
             await removeItem(STORAGE_KEY.PROFILE_ID);
             await removeItem(STORAGE_KEY.TYPE);
             await removeItem(STORAGE_KEY.EMAIL);
-        } catch (e) {}
+        } catch (e) { }
         navigation.reset({
             index: 0,
             routes: [
@@ -46,6 +50,20 @@ export default function ProfilePage({ route, navigation }) {
             ],
         });
     }
+
+    useEffect(() => {
+        serviceContext.request(
+            'get',
+            '/api/consumer/profile/view',
+            {},
+            ({ data }) => {
+                dispatch(setProfileName(data.name))
+                dispatch(setProfilePicture(data.profilePicture))
+                dispatch(setProfileSpaces(data.spaces))
+            },
+            () => undefined,
+        )
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -64,71 +82,7 @@ export default function ProfilePage({ route, navigation }) {
                             <View style={styles.sectionBlock}>
                                 <View style={styles.sectionBlockRow}>
                                     <Text style={styles.sectionBlockRowTitle}>Name</Text>
-                                    <Text style={styles.sectionBlockRowValue}>Kimi no Naewa</Text>
-                                </View>
-
-                                <View style={styles.sectionBlockRow}>
-                                    <Text style={styles.sectionBlockRowTitle}>Name</Text>
-                                    <Text style={styles.sectionBlockRowValue}>Kimi no Naewa</Text>
-                                </View>
-
-                            </View>
-                        </SectionBlock>
-
-                        <SectionBlock
-                            title="Social Media"
-                            onEdit={() => setShowPopup('socialMedia')}
-                        >
-                            <View style={styles.sectionBlockSocialMedia}>
-                                <Image
-                                    style={styles.socialMediaIcon}
-                                    source={require('../../../assets/LinkedIn.png')}
-                                />
-                                <Image
-                                    style={styles.socialMediaIcon}
-                                    source={require('../../../assets/Instagram.png')}
-                                />
-                                <Image
-                                    style={styles.socialMediaIcon}
-                                    source={require('../../../assets/Twitter.png')}
-                                />
-                            </View>
-                        </SectionBlock>
-
-                        <SectionBlock
-                            title={"About Me"}
-                            onEdit={() => setShowPopup('aboutMe')}
-                        >
-                            <Text style={styles.aboutMeText}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-                            </Text>
-                        </SectionBlock>
-
-                        <SectionBlock
-                            title="One on One Settings"
-                            onEdit={() => setShowPopup('oneOnOne')}
-                        >
-                            <View style={styles.sectionBlock}>
-                                <View style={styles.sectionBlockRow}>
-                                    <Text style={styles.sectionBlockRowTitle}>Working Hours</Text>
-                                    <Text style={styles.sectionBlockRowValue}>9 am - 5 pm</Text>
-                                    <View style={styles.tipModal}>
-                                        <TipModal text={"Set your working hours for every day of week."} />
-                                    </View>
-                                </View>
-
-                                <View style={styles.sectionBlockRow}>
-                                    <Text style={styles.sectionBlockRowTitle}>Off Days</Text>
-                                    <Text style={styles.sectionBlockRowValue}>
-                                        {`Sunday\nMonday`}
-                                    </Text>
-                                    <View style={styles.tipModal}>
-                                        <TipModal text={"Choose which days you want to take off every week."} />
-                                    </View>
+                                    <Text style={styles.sectionBlockRowValue}>{profileName}</Text>
                                 </View>
                             </View>
                         </SectionBlock>

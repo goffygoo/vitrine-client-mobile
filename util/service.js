@@ -4,6 +4,7 @@ import { getItem, getSecureItem, setSecureItem } from "./storage";
 import { SECURE_STORAGE_KEY, STORAGE_KEY } from "../constants";
 
 const SERVER = config.SERVER;
+const FILE_SERVER = config.FILE_SERVER;
 
 const routeUpdateRequired = (method) => {
     return method === "get" || method === "delete";
@@ -125,3 +126,35 @@ export const resource_request_with_access_token =
                     } else onError(err);
                 });
         };
+
+
+export const file_server_request = async (
+    method,
+    route,
+    body,
+    onSuccess,
+    onError,
+    formData = true
+) => {
+    const token = await getSecureItem(SECURE_STORAGE_KEY.ACCESS_TOKEN);
+
+    const config = {
+        headers: {
+            Authorization: token,
+            ...(formData && { "Content-Type": "multipart/form-data" }),
+        },
+    };
+
+    if (routeUpdateRequired(method)) {
+        route = getUpdatedRoute(route, body);
+        body = config;
+    }
+
+    axios[method](`${FILE_SERVER}${route}`, body, config)
+        .then((response) => {
+            onSuccess(response);
+        })
+        .catch((err) => {
+            onError(err);
+        });
+};

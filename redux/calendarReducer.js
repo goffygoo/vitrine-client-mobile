@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+let prevColor = null;
 const eventColors = ['#AF96F6', '#AFE5B1', '#788DFF', '#FFBF90', '#AAD6EE'];
-const getRandomColor = () => {
-    return eventColors[Math.floor(Math.random() * eventColors.length)];
+const getRandomColor = (reccursion = 0) => {
+    const color = eventColors[Math.floor(Math.random() * eventColors.length)];
+    if (color === prevColor && reccursion < 3) return getRandomColor(reccursion + 1);
+    prevColor = color;
+    return color;
 }
 
 const initialState = {
