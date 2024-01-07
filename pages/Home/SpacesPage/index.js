@@ -1,51 +1,52 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { themeSelector } from "../../../redux/settingReducer";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import colors from '../../../colors.json';
 import Tile from "./Tile";
-import { ServiceContext } from "../../../util/context/serviceContext";
 import _ from 'lodash'
+import Loader from "../../../components/widgets/Loader";
+import { setActiveSpace, spacesListLoadingSelector, spacesListSelector } from "../../../redux/spacesReducer";
 
 export default function SpacesPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
-    const serviceContext = useContext(ServiceContext);
 
-    const [spaces, setSpaces] = useState([])
-
-    useEffect(() => {
-        serviceContext.request(
-            'get',
-            '/api/consumer/getAllSpaces',
-            {},
-            ({ data }) => setSpaces(data.spaces),
-            () => undefined
-        )
-    }, [])
-
+    const dispatch = useDispatch();
+    const spaces = useSelector(spacesListSelector);
+    const spacesLoading = useSelector(spacesListLoadingSelector);
 
     return (
         <ScrollView style={styles.scrollContainer}>
-            <View style={styles.container}>
-                <Text style={styles.heading}>My Spaces</Text>
-                {
-                    _.chunk(spaces, 2).map(chunk => {
-                        return (
-                            <View style={styles.tileRow}>
-                                {
-                                    chunk.map(space =>
-                                        <Tile
-                                            {...space}
-                                            onClick={() => navigation.navigate('Space')}
-                                        />
-                                    )
-                                }
-                            </View>
-                        )
-                    })
-                }
-            </View>
+            {
+                spacesLoading ?
+                    <View style={{ height: 300, justifyContent: 'flex-end' }}>
+                        <Loader />
+                    </View>
+                    :
+                    <View style={styles.container}>
+                        <Text style={styles.heading}>My Spaces</Text>
+                        {
+                            _.chunk(spaces, 2).map(chunk => {
+                                return (
+                                    <View style={styles.tileRow}>
+                                        {
+                                            chunk.map(space =>
+                                                <Tile
+                                                    {...space}
+                                                    onClick={() => {
+                                                        dispatch(setActiveSpace(space._id));
+                                                        navigation.navigate('Space');
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                    </View>
+                                )
+                            })
+                        }
+                    </View>
+            }
         </ScrollView>
     )
 }

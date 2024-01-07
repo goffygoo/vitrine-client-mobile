@@ -13,7 +13,6 @@ export default function ChatPage({ route, navigation }) {
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     const spaceData = useSelector(activeSpaceDataSelector);
-    const { title, color, boxes } = spaceData;
 
     const [chatText, setChatText] = useState('')
 

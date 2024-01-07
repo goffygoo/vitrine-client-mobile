@@ -5,10 +5,27 @@ import SpacesPage from './SpacesPage';
 import LandingPage from './LandingPage';
 import ProfilePage from './ProfilePage';
 import CalendarPage from './CalendarPage';
+import { useContext, useEffect } from "react";
+import { ServiceContext } from "../../util/context/serviceContext";
+import { useDispatch } from "react-redux";
+import { setSpacesList, setSpacesListLoading } from "../../redux/spacesReducer";
 
 const BottomTab = createBottomTabNavigator();
 
 export default function Home({ route, navigation }) {
+    const serviceContext = useContext(ServiceContext);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setSpacesListLoading());
+        serviceContext.request(
+            'get',
+            '/api/consumer/getAllSpaces',
+            {},
+            ({ data }) => dispatch(setSpacesList(data.spaces)),
+            () => undefined
+        )
+    }, [])
     return (
         <View style={styles.container}>
             <BottomTab.Navigator

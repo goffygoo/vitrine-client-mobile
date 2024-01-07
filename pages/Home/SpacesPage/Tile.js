@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
 import colors from '../../../colors.json';
+import { getFileUrl } from '../../../util/helper';
 
 export default function Tile({ onClick, ...space }) {
     const theme = useSelector(themeSelector);
@@ -26,7 +27,7 @@ export default function Tile({ onClick, ...space }) {
                 <Image
                     style={styles.bannerImage}
                     source={{
-                        uri: coverPicture
+                        uri: getFileUrl(coverPicture)
                     }}
                     resizeMode='cover'
                 />
@@ -34,7 +35,7 @@ export default function Tile({ onClick, ...space }) {
                     <Image
                         style={styles.profileImage}
                         source={{
-                            uri: displayPicture
+                            uri: getFileUrl(displayPicture)
                         }}
                         resizeMode='contain' />
                 </View>

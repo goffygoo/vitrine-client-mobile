@@ -2,10 +2,12 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Space from './Space';
 import { ImageBackground, ImageComponent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeSpaceSelector, setActiveSpace, spacesListSelector } from '../redux/spacesReducer';
+import { activeSpaceSelector, setActiveSpace, spacesListLoadingSelector, spacesListSelector } from '../redux/spacesReducer';
 import { themeSelector } from '../redux/settingReducer';
 import { useMemo } from 'react';
 import colors from '../colors.json';
+import Loader from '../components/widgets/Loader';
+import { getFileUrl } from '../util/helper';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,21 +33,23 @@ function DrawerContent({ navigation }) {
                         return (
                             <View style={styles.spaceIconContainer}>
                                 <ImageBackground
-                                    source={require('../assets/profileCover.jpg')}
-                                    style={[styles.spaceIcon, space.id === activeSpace ? styles.spaceIconActive : {}]}
+                                    source={{
+                                        uri: getFileUrl(space.displayPicture)
+                                    }}
+                                    style={[styles.spaceIcon, space._id === activeSpace ? styles.spaceIconActive : {}]}
                                     resizeMode="cover"
                                 >
                                     <Pressable
                                         style={styles.spaceIconPressable}
                                         android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
-                                        onPress={() => handlePress(space.id)}
+                                        onPress={() => handlePress(space._id)}
                                     >
                                     </Pressable>
                                 </ImageBackground>
                                 <Text
-                                    style={[styles.spaceIconTitle, space.id === activeSpace ? styles.spaceIconTitleActive : {}]}
+                                    style={[styles.spaceIconTitle, space._id === activeSpace ? styles.spaceIconTitleActive : {}]}
                                 >{space.title}</Text>
-                                <View style={space.id === activeSpace ? styles.spaceIconArtifact : {}} />
+                                <View style={space._id === activeSpace ? styles.spaceIconArtifact : {}} />
                             </View>
                         )
                     })
@@ -109,20 +113,26 @@ const generateStyles = THEME => StyleSheet.create({
 })
 
 export default function SpaceDrawer({ route, navigation }) {
+    const loading = useSelector(spacesListLoadingSelector);
     return (
-        <Drawer.Navigator
-            drawerContent={DrawerContent}
-            screenOptions={() => ({
-                headerShown: false,
-                drawerStyle: {
-                    width: 112,
-                }
-            })}
-        >
-            <Drawer.Screen
-                name={"Page"}
-                component={Space}
-            />
-        </Drawer.Navigator>
+        loading ?
+            <View style={{ height: 300, justifyContent: 'flex-end' }}>
+                <Loader />
+            </View>
+            :
+            <Drawer.Navigator
+                drawerContent={DrawerContent}
+                screenOptions={() => ({
+                    headerShown: false,
+                    drawerStyle: {
+                        width: 112,
+                    }
+                })}
+            >
+                <Drawer.Screen
+                    name={"Page"}
+                    component={Space}
+                />
+            </Drawer.Navigator>
     )
 }

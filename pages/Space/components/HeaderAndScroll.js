@@ -11,7 +11,6 @@ export default function HeaderAndScroll({ children, navigation, hasRightDrawer }
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     const spaceData = useSelector(activeSpaceDataSelector);
-    const { title } = spaceData;
 
     const openLeftDrawer = () => {
         if (hasRightDrawer) navigation.getParent().openDrawer();
@@ -31,7 +30,7 @@ export default function HeaderAndScroll({ children, navigation, hasRightDrawer }
                 >
                     <AntDesign name="menufold" size={24} color={colors.TEXT_COLOR_LIGHT[theme]} />
                 </Pressable>
-                <Text style={styles.headerHeading}>{title}</Text>
+                <Text style={styles.headerHeading}>{'title'}</Text>
                 {
                     hasRightDrawer &&
                     <Pressable

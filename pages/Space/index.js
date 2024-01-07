@@ -1,15 +1,38 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import FormPage from './FormPage';
 import ChatPage from './ChatPage';
 import SpacePage from './SpacePage';
-import ShelfPage from './ShelfPage';
 import CalendarPage from './CalendarPage';
+import { useContext, useEffect } from "react";
+import { ServiceContext } from "../../util/context/serviceContext";
+import { useDispatch, useSelector } from "react-redux";
+import { activeSpaceSelector, setSpacePosts, spaceRequestSelector, spacesListSelector } from "../../redux/spacesReducer";
 
 const BottomTab = createBottomTabNavigator();
 
 export default function Space({ route, navigation }) {
+    const dispatch = useDispatch();
+    const serviceContext = useContext(ServiceContext);
+
+    const spaceId = useSelector(activeSpaceSelector);
+    const lastRequest = useSelector(spaceRequestSelector(spaceId));
+
+    useEffect(() => {
+        if ((Date.now() - lastRequest) <= 1000 * 60 * 3) return;
+        serviceContext.request(
+            'post',
+            '/api/space/stream/getPosts',
+            {
+                spaceId
+            },
+            ({ data }) => {
+                dispatch(setSpacePosts({ spaceId, posts: data.posts }));
+            },
+            () => undefined
+        )
+    }, [spaceId]);
+
     return (
         <View style={styles.container}>
             <BottomTab.Navigator
@@ -26,18 +49,6 @@ export default function Space({ route, navigation }) {
                 initialRouteName='SpacePage'
                 backBehavior='initialRoute'
             >
-                <BottomTab.Screen
-                    name="FormPage"
-                    component={FormPage}
-                    options={{
-                        tabBarIcon: (({ focused, color, size }) => {
-                            let iconName = focused ? 'document' : 'document-outline';
-                            return <Ionicons name={iconName} size={size} color={color} />
-                        })
-                    }}
-                    initialParams={route.params}
-                />
-
                 <BottomTab.Screen
                     name="ChatPage"
                     component={ChatPage}
@@ -56,18 +67,6 @@ export default function Space({ route, navigation }) {
                     options={{
                         tabBarIcon: (({ focused, color, size }) => {
                             let iconName = focused ? 'ios-reader' : 'ios-reader-outline';
-                            return <Ionicons name={iconName} size={size} color={color} />
-                        })
-                    }}
-                    initialParams={route.params}
-                />
-
-                <BottomTab.Screen
-                    name="ShelfPage"
-                    component={ShelfPage}
-                    options={{
-                        tabBarIcon: (({ focused, color, size }) => {
-                            let iconName = focused ? 'file-tray-full' : 'file-tray-full-outline';
                             return <Ionicons name={iconName} size={size} color={color} />
                         })
                     }}

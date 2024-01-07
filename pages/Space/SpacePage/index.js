@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { WebView } from 'react-native-webview';
 import { useSelector } from "react-redux";
-import { activeSpaceDataSelector } from "../../../redux/spacesReducer";
+import { activeSpaceDataSelector, activeSpacePostSelector } from "../../../redux/spacesReducer";
 import { themeSelector } from "../../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../../colors.json';
@@ -13,7 +13,7 @@ export default function SpacePage({ route, navigation }) {
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     const spaceData = useSelector(activeSpaceDataSelector);
-    const { title, color, boxes } = spaceData;
+    const postData = useSelector(activeSpacePostSelector);
 
     return (
         <View style={styles.container}>
@@ -23,21 +23,29 @@ export default function SpacePage({ route, navigation }) {
                 <View style={styles.scrollInner}>
                     <ImageHeader />
                     {
-                        Array(boxes).fill(1).map(() => {
+                        Array(postData?.length).fill(1).map(() => {
                             return (
                                 <View
                                     style={{
                                         width: 50,
                                         height: 50,
                                         margin: 16,
-                                        backgroundColor: color,
+                                        backgroundColor: 'red',
                                     }}
                                 ></View>
                             )
                         })
                     }
-                    <WebView
+                    {/* <WebView
                         source={{ uri: 'https://reactnative.dev/img/header_logo.svg' }}
+                        style={styles.webView}
+                    /> */}
+
+                    <WebView
+                        source={{ uri: 'http://192.168.1.42:3000/webview' }}
+                        injectedJavaScript={`const meta = document.createElement('meta'); meta.setAttribute('content', 'width=width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta);`}
+                        scalesPageToFit={true}
+                        allowsFullscreenVideo={true}
                         style={styles.webView}
                     />
                 </View>
@@ -61,6 +69,7 @@ const generateStyles = THEME => StyleSheet.create({
     },
     webView: {
         width: 300,
-        height: 400,
+        height: 600,
+        resizeMode: 'cover',
     },
 })

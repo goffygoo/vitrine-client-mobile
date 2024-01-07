@@ -1,11 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
-import Button from "../../components/Button";
 
 export default function CalendarPage({ route, navigation }) {
     return (
         <View style={styles.container}>
             <Text>Calendar Page</Text>
-            <Button text={"Click"} onPress={() => navigation.navigate('TestPage')} />
         </View>
     )
 }
