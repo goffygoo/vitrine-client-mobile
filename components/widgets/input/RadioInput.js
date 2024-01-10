@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import colors from '../../../colors.json';
 
-export default function CheckBox({ checked, onChange, text, width = "100%" }) {
+export default function RadioInput({ selected, onChange, text, width = "100%" }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
     const imageSource = theme === 'DARK' ? require('../../../assets/TickDark.png') : require('../../../assets/TickLight.png');
@@ -13,20 +13,13 @@ export default function CheckBox({ checked, onChange, text, width = "100%" }) {
         <View style={[styles.container, { width }]}>
             <Pressable
                 style={styles.pressableContainer}
-                onPress={() => onChange(!checked)}
+                onPress={() => onChange(!selected)}
             >
+                <View style={styles.icon}>
                     <View
-                        style={[styles.icon, { ...(checked && styles.iconChecked) }]}
-                    >
-                        {
-                            checked ?
-                                <Image
-                                    style={styles.image}
-                                    source={imageSource}
-                                    resizeMode="center"
-                                /> : null
-                        }
-                    </View>
+                        style={[styles.iconInner, { ...(selected && styles.iconSelected) }]}
+                    />
+                </View>
                 <Text style={styles.text}>{text}</Text>
             </Pressable>
         </View>
@@ -43,23 +36,31 @@ const generateStyles = THEME => StyleSheet.create({
         alignItems: 'center',
         padding: 4,
     },
+    selected: {
+        height: 24,
+        width: 24,
+        borderRadius: 12,
+        marginRight: 8,
+        overflow: 'hidden',
+    },
     icon: {
         height: 24,
         width: 24,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 4,
+        borderRadius: 12,
         borderWidth: 2,
         marginRight: 8,
         overflow: 'hidden',
         borderColor: colors.PRIMARY_COLOR,
     },
-    iconChecked: {
-        backgroundColor: colors.PRIMARY_COLOR,
-    },
-    image: {
+    iconInner: {
         height: 14,
-        width: 16,
+        width: 14,
+        borderRadius: 14,
+    },
+    iconSelected: {
+        backgroundColor: colors.PRIMARY_COLOR,
     },
     text: {
         fontSize: 16,

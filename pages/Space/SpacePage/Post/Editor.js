@@ -18,9 +18,9 @@ export default function Editor({ post, showModal }) {
   const linkImage = theme === 'DARK' ? require('../../../../assets/LinkLight.png') : require('../../../../assets/LinkDark.png')
   const {
     _id,
-    updatedAt
+    createdAt
   } = post;
-  const dateObj = new Date(updatedAt);
+  const dateObj = new Date(createdAt);
   const uri = `${WEBVIEW_HOST}/webview?postId=${encodeURIComponent(_id)}&accessToken=${encodeURIComponent(accessToken)}&refreshToken=${encodeURIComponent(refreshToken)}&userId=${encodeURIComponent(userId)}`;
   return (
     <View style={styles.container}>
@@ -34,6 +34,9 @@ export default function Editor({ post, showModal }) {
         }}
       />
       <View style={styles.footer}>
+        <Text style={styles.timestamp}>
+          {`${getDateStamp(dateObj)} • ${getTimeStamp(dateObj)}`}
+        </Text>
         <Pressable
           onPress={() => showModal({ uri, title: 'Editor' })}
           style={styles.fullScreen}
@@ -45,9 +48,6 @@ export default function Editor({ post, showModal }) {
           />
           <Text style={styles.footerText}>Full Screen</Text>
         </Pressable>
-        <Text style={styles.timestamp}>
-          {`${getDateStamp(dateObj)} • ${getTimeStamp(dateObj)}`}
-        </Text>
       </View>
     </View>
   )
@@ -58,7 +58,8 @@ const generateStyles = THEME => StyleSheet.create({
     height: 240,
     width: '70%',
     borderRadius: 8,
-    marginVertical: 8,
+    marginVertical: 16,
+    overflow: 'hidden',
     backgroundColor: colors.BG_COLOR_MODAL[THEME],
   },
   footer: {
@@ -66,11 +67,11 @@ const generateStyles = THEME => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 8,
+    marginHorizontal: 8,
   },
   fullScreen: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 8,
   },
   linkImg: {
     height: 24,
@@ -83,7 +84,6 @@ const generateStyles = THEME => StyleSheet.create({
     color: colors.TEXT_COLOR[THEME],
   },
   timestamp: {
-    paddingRight: 8,
     fontSize: 12,
     color: colors.TEXT_COLOR_ALT[THEME],
   },

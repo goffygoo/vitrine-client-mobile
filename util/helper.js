@@ -9,6 +9,6 @@ export const getTimeStamp = dateObject => {
     return `${(dateObject.getUTCHours() % 12) || 12}:${dateObject.getMinutes() < 10 ? 0 : ""}${dateObject.getMinutes()} ${dateObject.getUTCHours() < 12 ? 'am' : 'pm'}`;
 }
 
-export const getFileUrl = image => {
-    return `${config.FILE_SERVER}/getFile?id=${image}`
+export const getFileUrl = file => {
+    return `${config.FILE_SERVER}/getFile?id=${file}`
 }
