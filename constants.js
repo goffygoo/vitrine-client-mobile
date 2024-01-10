@@ -28,3 +28,11 @@ export const DEVICE = {
 export const SOCKET_EVENTS = {
     CONNECTION_ERROR: 'connect_error',
 }
+
+export const POST_TYPE = {
+    EDITOR: 'EDITOR',
+    POLL: 'POLL',
+    IMAGE: 'IMAGE',
+    VIDEO: 'VIDEO',
+    FILE: 'FILE',
+}

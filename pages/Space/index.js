@@ -7,7 +7,7 @@ import CalendarPage from './CalendarPage';
 import { useContext, useEffect } from "react";
 import { ServiceContext } from "../../util/context/serviceContext";
 import { useDispatch, useSelector } from "react-redux";
-import { activeSpaceSelector, setSpacePosts, spaceRequestSelector, spacesListSelector } from "../../redux/spacesReducer";
+import { activeSpaceSelector, setSpacePosts, spaceRequestSelector } from "../../redux/spacesReducer";
 
 const BottomTab = createBottomTabNavigator();
 
