@@ -9,6 +9,7 @@ import DayCalender from "../../../components/calendar/DayCalender";
 import { calendarLastRequestSelector, calendarParsedEventsSelector, setAllEvents } from "../../../redux/calendarReducer";
 import { ServiceContext } from "../../../util/context/serviceContext";
 import { DAYS_LIST, MONTHS_LIST } from "../../../constants";
+import Loader from "../../../components/widgets/Loader";
 
 export default function CalendarPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
@@ -177,7 +178,7 @@ export default function CalendarPage({ route, navigation }) {
                                 />
                         }
                     </>
-                    : <Text style={styles.loader}>Loading</Text>
+                    :  <Loader />
             }
         </View>
     )
@@ -203,9 +204,5 @@ const generateStyles = THEME => StyleSheet.create({
         fontWeight: '500',
         marginHorizontal: 32,
         color: colors.TEXT_COLOR[THEME],
-    },
-    loader: {
-        fontSize: 16,
-        color: colors.TEXT_COLOR_LIGHT[THEME],
     },
 })

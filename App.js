@@ -112,10 +112,7 @@ export default function Wrapper() {
 
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
-
+    const unsubscribe = messaging().onMessage(async remoteMessage => {});
     return unsubscribe;
   }, []);
 
