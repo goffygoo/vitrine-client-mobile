@@ -4,12 +4,14 @@ import { SECURE_STORAGE_KEY, SOCKET_EVENTS, STORAGE_KEY } from "../constants";
 import { auth_request } from "./service";
 import { getItem, getSecureItem, setSecureItem } from "./storage";
 import { setAccessToken } from "../redux/authReducer";
+import listenChatEvents from "./chat";
 
 const { SERVER } = config;
 
 let socket;
 
-const listenAllEvents = (dispatch) => {
+const listenAllEvents = (dispatch, listen) => {
+  listenChatEvents(dispatch, listen)
 };
 
 export const initConnection = (dispatch, props) => {
@@ -38,7 +40,7 @@ export const initConnection = (dispatch, props) => {
     )
   });
 
-  listenAllEvents(dispatch);
+  listenAllEvents(dispatch, listen);
 };
 
 export const disconnect = () => {

@@ -1,45 +1,47 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
 import colors from '../../../colors.json';
+import { USER_TYPES } from '../../../constants';
+import { membersSelector } from '../../../redux/chatReducer';
+import { getDateStamp, getFileUrl, getTimeStamp } from '../../../util/helper';
 
-export default function ChatCard({ person, time, text }) {
+export default function ChatCard({ message }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
-
-    const { name, isAdmin } = person;
+    const {
+        createdAt,
+        message: textMessage,
+        sender,
+        senderType,
+        spaceId
+    } = message;
+    const members = useSelector(membersSelector(spaceId));
+    const { name, profilePicture } = members?.[sender] || {};
+    const date = new Date(createdAt);
 
     return (
         <View style={styles.container}>
             <Image
-                source={require('../../../assets/avatar_b.jpg')}
+                source={{
+                    uri: getFileUrl(profilePicture)
+                }}
                 resizeMode='cover'
                 style={styles.image}
             />
             <View style={styles.textContainer}>
                 <View style={styles.nameContainer}>
                     <Text style={styles.name}>{name}</Text>
-                    {isAdmin && <Image
+                    {(senderType === USER_TYPES.PROVIDER) && <Image
                         source={require('../../../assets/adminMark.png')}
                         resizeMode='contain'
                         style={styles.mark}
                     />}
                 </View>
-                <Text style={styles.time}>{time}</Text>
-                <Text style={styles.messageText}>{text}</Text>
+                <Text style={styles.time}>{`${getDateStamp(date)} • ${getTimeStamp(date)}`}</Text>
+                <Text style={styles.messageText}>{textMessage}</Text>
             </View>
-            <Pressable
-                style={styles.deleteWrapper}
-                android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }}
-            >
-                <Image
-                    source={require('../../../assets/Delete.png')}
-                    resizeMode='contain'
-                    style={styles.delete}
-                />
-            </Pressable>
-
         </View >
     )
 }
@@ -87,17 +89,5 @@ const generateStyles = THEME => StyleSheet.create({
     messageText: {
         fontSize: 14,
         color: colors.TEXT_COLOR_LIGHT[THEME],
-    },
-    deleteWrapper: {
-        width: 32,
-        height: 40,
-        marginTop: -8,
-        marginRight: -8,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    delete: {
-        width: 24,
-        height: 24,
     },
 })

@@ -103,7 +103,7 @@ const generateStyles = THEME => StyleSheet.create({
     scrollInner: {
         flex: 1,
         alignItems: 'center',
-        paddingBottom: 64
+        paddingBottom: 16
     },
     modalHeader: {
         height: 64,

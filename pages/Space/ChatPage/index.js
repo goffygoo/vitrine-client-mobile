@@ -6,6 +6,8 @@ import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
 import colors from '../../../colors.json';
 import PersonCard from './PersonCard';
+import { activeSpaceSelector } from '../../../redux/spacesReducer';
+import { membersSelector, onlineMembersSelector } from '../../../redux/chatReducer';
 
 const Drawer = createDrawerNavigator();
 
@@ -13,60 +15,34 @@ function CustomDrawerContent() {
   const theme = useSelector(themeSelector);
   const styles = useMemo(() => generateStyles(theme), [theme]);
 
-  const people = {
-    admins: [
-      {
-        name: 'Captain Baljeet',
-        online: true,
-      },
-      {
-        name: 'Politician Baljeet',
-        online: false,
-      },
-    ],
-    members: [
-      {
-        name: 'Baljeet Badmash',
-        online: true,
-      },
-      {
-        name: 'Crazy Alina',
-        online: true,
-      },
-      {
-        name: 'South Indian Anna Baljeet',
-        online: true,
-      },
-      {
-        name: 'Jaggu Bander',
-        online: false,
-      },
-      {
-        name: 'Sleepy Baljeet',
-        online: false,
-      },
-    ]
-  }
+  const spaceId = useSelector(activeSpaceSelector);
+  const members = useSelector(membersSelector(spaceId));
+
+  const onlineMembers = useSelector(onlineMembersSelector);
+  const provider = Object.keys(members || {}).filter(id => members[id].provider);
+  const consumers = Object.keys(members || {}).filter(id => !members[id].provider);
 
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.scrollInner}>
         <Text style={styles.heading}>Admin</Text>
         {
-          people.admins.sort((a, b) => b.online - a.online).map(person => {
+          provider.map(person => {
             return <PersonCard
-              name={person.name}
-              online={person.online}
+              name={members[person].name}
+              profilePicture={members[person].profilePicture}
+              online={onlineMembers[person]}
               isAdmin
             />
           })
         }
         <Text style={styles.heading}>Members</Text>
         {
-          people.members.sort((a, b) => b.online - a.online).map(person => {
+          consumers.map(person => {
             return <PersonCard
-              name={person.name}
-              online={person.online}
+              name={members[person].name}
+              profilePicture={members[person].profilePicture}
+              online={onlineMembers[person]}
             />
           })
         }

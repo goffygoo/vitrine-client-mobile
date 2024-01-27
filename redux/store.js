@@ -4,6 +4,7 @@ import spacesReducer from './spacesReducer'
 import authReducer from './authReducer'
 import calendarReducer from './calendarReducer'
 import profileReducer from './profileReducer'
+import chatReducer from './chatReducer'
 
 export default configureStore({
     reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
         auth: authReducer,
         calendar: calendarReducer,
         profile: profileReducer,
+        chat: chatReducer,
     },
 })

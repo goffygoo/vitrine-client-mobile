@@ -3,15 +3,16 @@ import { useSelector } from 'react-redux';
 import { themeSelector } from '../../../redux/settingReducer';
 import { useMemo } from 'react';
 import colors from '../../../colors.json';
+import { getFileUrl } from '../../../util/helper';
 
-export default function PersonCard({ name, online, isAdmin }) {
+export default function PersonCard({ name, profilePicture, online, isAdmin }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
     return (
         <View style={[styles.container, !online && styles.offline]}>
             <Image
-                source={require('../../../assets/avatar_b.jpg')}
+                source={{uri: getFileUrl(profilePicture) }}
                 resizeMode='cover'
                 style={styles.image}
             />

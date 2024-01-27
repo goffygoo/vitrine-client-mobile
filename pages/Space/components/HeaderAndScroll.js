@@ -1,16 +1,16 @@
-import { useMemo, Children } from 'react'
+import { useMemo, Children, useRef } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux';
 import { themeSelector } from '../../../redux/settingReducer';
 import { AntDesign } from '@expo/vector-icons';
-import { activeSpaceDataSelector } from '../../../redux/spacesReducer';
 import colors from '../../../colors.json';
+import Divider from '../../../components/widgets/Divider';
 
-export default function HeaderAndScroll({ children, navigation, hasRightDrawer }) {
+export default function HeaderAndScroll({ children, navigation, hasRightDrawer, scrollToEnd }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
-    const spaceData = useSelector(activeSpaceDataSelector);
+    const ref = useRef();
 
     const openLeftDrawer = () => {
         if (hasRightDrawer) navigation.getParent().openDrawer();
@@ -41,7 +41,17 @@ export default function HeaderAndScroll({ children, navigation, hasRightDrawer }
                         <AntDesign name="menuunfold" size={24} color={colors.TEXT_COLOR_LIGHT[theme]} />
                     </Pressable>}
             </View>
-            <ScrollView style={styles.scroll} overScrollMode='never' removeClippedSubviews={true} >
+            <ScrollView
+                ref={ref}
+                style={styles.scroll}
+                overScrollMode='never'
+                removeClippedSubviews={true}
+                {...(scrollToEnd &&
+                    { onContentSizeChange: () => ref.current.scrollToEnd({ animated: true }) }
+                )}
+            >
+                <Divider size={'xl'} />
+                <Divider size={'l'} />
                 {Children.map(children, child => child)}
             </ScrollView>
         </View>
@@ -59,7 +69,6 @@ const generateStyles = THEME => StyleSheet.create({
         flex: 1,
         height: '100%',
         width: '100%',
-        paddingTop: 48,
     },
     header: {
         position: 'absolute',

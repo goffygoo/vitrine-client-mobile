@@ -27,6 +27,12 @@ export const DEVICE = {
 
 export const SOCKET_EVENTS = {
     CONNECTION_ERROR: 'connect_error',
+    MESSAGE_RECIEVED: "chat-message-received",
+    MESSAGE_SEND: "chat-message-send",
+    JOINED_CHAT: "joined-chat",
+    LEFT_CHAT: "left-chat",
+    GET_ONLINE_MEMBERS: "get-online-members",
+    RECIEVED_ONLINE_MEMBER: "recieved-online-members",
 }
 
 export const POST_TYPE = {

@@ -8,6 +8,9 @@ import { useContext, useEffect } from "react";
 import { ServiceContext } from "../../util/context/serviceContext";
 import { useDispatch, useSelector } from "react-redux";
 import { activeSpaceSelector, setSpacePosts, spaceRequestSelector } from "../../redux/spacesReducer";
+import { emitForcefully } from "../../util/socketIO";
+import { SOCKET_EVENTS } from "../../constants";
+import { initChats, initMembers } from "../../redux/chatReducer";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -20,6 +23,31 @@ export default function Space({ route, navigation }) {
 
     useEffect(() => {
         if ((Date.now() - lastRequest) <= 1000 * 60 * 3) return;
+        emitForcefully(SOCKET_EVENTS.GET_ONLINE_MEMBERS, { spaceId });
+        serviceContext.request(
+            'get',
+            '/api/space/essential/getMembers',
+            { spaceId },
+            ({ data }) => {
+                const members = data.data;
+                const tempMembers = {};
+                for (const member of members) {
+                    tempMembers[member._id] = member;
+                }
+                  dispatch(initMembers({ members: tempMembers, spaceId }));
+            },
+            () => undefined
+        );
+        serviceContext.request(
+            'get',
+            '/api/space/essential/getMessages',
+            { spaceId },
+            ({ data }) => {
+                const messages = data.data;
+                dispatch(initChats({ messages, spaceId }));
+            },
+            () => undefined
+        );
         serviceContext.request(
             'post',
             '/api/space/stream/getPosts',

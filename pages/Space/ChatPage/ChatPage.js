@@ -2,60 +2,43 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { themeSelector } from "../../../redux/settingReducer";
 import { useMemo, useState } from "react";
-import { activeSpaceDataSelector } from "../../../redux/spacesReducer";
+import { activeSpaceSelector } from "../../../redux/spacesReducer";
 import colors from '../../../colors.json';
 import HeaderAndScroll from "../components/HeaderAndScroll";
 import TextInputArea from "../../../components/widgets/input/TextInputArea";
 import ChatCard from "./ChatCard";
+import { chatSelector } from "../../../redux/chatReducer";
+import { emit } from "../../../util/socketIO";
+import { SOCKET_EVENTS } from "../../../constants";
 
 export default function ChatPage({ route, navigation }) {
     const theme = useSelector(themeSelector);
     const styles = useMemo(() => generateStyles(theme), [theme]);
 
-    const spaceData = useSelector(activeSpaceDataSelector);
+    const activeSpace = useSelector(activeSpaceSelector);
+    const messages = useSelector(chatSelector(activeSpace));
 
-    const [chatText, setChatText] = useState('')
+    const [chatText, setChatText] = useState('');
+
+    const handleSend = () => {
+        emit(SOCKET_EVENTS.MESSAGE_SEND, { message: chatText, spaceId: activeSpace });
+        setChatText('');
+    }
 
     return (
         <View style={styles.container}>
             <HeaderAndScroll
                 navigation={navigation}
                 hasRightDrawer
+                scrollToEnd
             >
                 <View style={styles.scrollInner}>
                     <View style={styles.chatWrapper}>
                         {
-                            Array(3).fill(1).map(() => {
+                            messages?.map(message => {
                                 return (
                                     <ChatCard
-                                        person={{
-                                            name: 'Sunilium',
-                                            isAdmin: false,
-                                        }}
-                                        time="21 Oct 12:31"
-                                        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                                    />
-                                )
-                            })
-                        }
-                        <ChatCard
-                            person={{
-                                name: 'Captain Baljeet',
-                                isAdmin: true,
-                            }}
-                            time="21 Oct 12:31"
-                            text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                        />
-                        {
-                            Array(7).fill(1).map(() => {
-                                return (
-                                    <ChatCard
-                                        person={{
-                                            name: 'Crazy Alina',
-                                            isAdmin: false,
-                                        }}
-                                        time="21 Oct 12:31"
-                                        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                                        message={message}
                                     />
                                 )
                             })
@@ -74,7 +57,10 @@ export default function ChatPage({ route, navigation }) {
                         type={"light"}
                     />
                 </View>
-                <Pressable style={styles.sendButtonWrapper} android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }} >
+                <Pressable
+                    onPress={handleSend}
+                    style={styles.sendButtonWrapper}
+                    android_ripple={{ color: colors.AND_RIPPLE[theme], foreground: true }} >
                     <Image
                         source={require('../../../assets/Send.png')}
                         resizeMode="contain"
