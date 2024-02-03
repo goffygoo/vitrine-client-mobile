@@ -4,6 +4,7 @@ import { themeSelector } from "../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../colors.json';
 import { Entypo } from '@expo/vector-icons';
+import { getFileUrl } from "../../util/helper";
 
 export default function SpaceCard({ pageData, space, navigation }) {
     const theme = useSelector(themeSelector);
@@ -21,7 +22,7 @@ export default function SpaceCard({ pageData, space, navigation }) {
                 <Image
                     style={styles.image}
                     source={{
-                        uri: pageData.banner
+                        uri: getFileUrl(pageData.banner)
                     }}
                     resizeMode="cover"
                 />
@@ -30,7 +31,7 @@ export default function SpaceCard({ pageData, space, navigation }) {
                         <Image
                             style={styles.providerImage}
                             source={{
-                                uri: pageData.profileImg
+                                uri: getFileUrl(pageData.profileImg)
                             }}
                             resizeMode="cover"
                         />
