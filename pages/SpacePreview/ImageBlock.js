@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { themeSelector } from '../../redux/settingReducer';
 import { useMemo } from "react";
 import colors from '../../colors.json';
+import { getFileUrl } from "../../util/helper";
 
 export default function ImageBlock(spaceData) {
     const theme = useSelector(themeSelector)
@@ -13,7 +14,7 @@ export default function ImageBlock(spaceData) {
             <View style={styles.banner}>
                 <Image
                     source={{
-                        uri: spaceData?.pageData?.banner
+                        uri: getFileUrl(spaceData?.pageData?.banner)
                     }}
                     style={styles.bannerImage}
                     resizeMode="cover"
@@ -22,7 +23,7 @@ export default function ImageBlock(spaceData) {
             <View style={styles.profileImageContainer}>
                 <Image
                     source={{
-                        uri: spaceData?.pageData?.profileImg
+                        uri: getFileUrl(spaceData?.pageData?.profileImg)
                     }}
                     style={styles.profileImage}
                 />
