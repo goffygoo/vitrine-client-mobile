@@ -1,5 +1,5 @@
 {
-    "SERVER": "http://103.172.252.35:5000",
-    "FILE_SERVER": "http://103.172.252.35:5002",
-    "WEBVIEW_HOST": "http://103.172.252.35:3000"
+    "SERVER": "http://[LOCAL_IP_HERE]:5000",
+    "FILE_SERVER": "http://[LOCAL_IP_HERE]:5002",
+    "WEBVIEW_HOST": "http://[LOCAL_IP_HERE]:3000"
 }
