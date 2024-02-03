@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { themeSelector } from "../../redux/settingReducer";
 import { useMemo } from "react";
 import colors from '../../colors.json';
+import { getFileUrl } from "../../util/helper";
 
 export default function Card(pageData) {
     const theme = useSelector(themeSelector);
@@ -13,7 +14,7 @@ export default function Card(pageData) {
         <View style={styles.container}>
             <Image
                 source={{
-                    uri: banner
+                    uri: getFileUrl(banner)
                 }}
                 style={styles.image}
                 resizeMode="cover"
